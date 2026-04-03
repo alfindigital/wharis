@@ -1,13 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Download, Trash2, Info } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Download, Trash2, Info, Moon } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import { clearHistory, getHistory } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Pengaturan() {
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode);
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
   const { toast } = useToast();
   const [historyCount, setHistoryCount] = useState(getHistory().length);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -42,6 +55,19 @@ export default function Pengaturan() {
   return (
     <PageShell title="Pengaturan" subtitle="Kelola aplikasi">
       <div className="space-y-4">
+        {/* Dark Mode */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Moon className="h-4 w-4 text-primary" /> Mode Gelap
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">Aktifkan tampilan gelap untuk kenyamanan mata.</p>
+            <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+          </CardContent>
+        </Card>
+
         {/* Install PWA */}
         <Card>
           <CardHeader className="pb-3">
