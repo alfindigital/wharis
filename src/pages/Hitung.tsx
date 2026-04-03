@@ -73,6 +73,77 @@ export default function Hitung() {
     setResult(null);
   };
 
+  const buildResultText = (res: CalculationResult) => {
+    let text = `📋 HASIL PERHITUNGAN WARIS\n`;
+    text += `📅 ${new Date(res.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n`;
+    text += `💰 Harta Bersih: ${formatCurrency(res.netHarta)}\n`;
+    if (res.isAul) text += `⚠️ Aul (penyesuaian bagian)\n`;
+    if (res.isRadd) text += `🔄 Radd (pengembalian sisa)\n`;
+    text += `\n--- Pembagian ---\n`;
+    res.results.filter(r => !r.blocked).forEach(r => {
+      text += `\n👤 ${r.label} (${r.count} orang)\n`;
+      text += `   Bagian: ${r.fraction} (${r.percentage.toFixed(1)}%)\n`;
+      text += `   Total: ${formatCurrency(r.amount)}\n`;
+      if (r.count > 1) text += `   Per orang: ${formatCurrency(r.amountPerPerson)}\n`;
+      text += `   📖 ${r.dalil}\n`;
+    });
+    const blocked = res.results.filter(r => r.blocked);
+    if (blocked.length > 0) {
+      text += `\n--- Terhijab ---\n`;
+      blocked.forEach(r => {
+        text += `❌ ${r.label}: ${r.blockReason}\n`;
+      });
+    }
+    if (res.sisaHarta > 0) {
+      text += `\nSisa Harta: ${formatCurrency(res.sisaHarta)} (Baitul Mal)\n`;
+    }
+    text += `\n— Waris Islam App`;
+    return text;
+  };
+
+  const handleCopyText = async () => {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(buildResultText(result));
+      toast({ title: 'Berhasil', description: 'Hasil perhitungan disalin ke clipboard.' });
+    } catch {
+      toast({ title: 'Gagal', description: 'Tidak dapat menyalin teks.', variant: 'destructive' });
+    }
+  };
+
+  const handleSaveImage = async () => {
+    if (!resultRef.current) return;
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(resultRef.current, { backgroundColor: null, scale: 2 });
+      const link = document.createElement('a');
+      link.download = `waris-${Date.now()}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.9);
+      link.click();
+      toast({ title: 'Berhasil', description: 'Gambar tersimpan.' });
+    } catch {
+      toast({ title: 'Gagal', description: 'Tidak dapat menyimpan gambar.', variant: 'destructive' });
+    }
+  };
+
+  const handleExportPDF = async () => {
+    if (!resultRef.current) return;
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const { jsPDF } = await import('jspdf');
+      const canvas = await html2canvas(resultRef.current, { backgroundColor: '#ffffff', scale: 2 });
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgWidth = 190;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+      pdf.save(`waris-${Date.now()}.pdf`);
+      toast({ title: 'Berhasil', description: 'PDF tersimpan.' });
+    } catch {
+      toast({ title: 'Gagal', description: 'Tidak dapat membuat PDF.', variant: 'destructive' });
+    }
+  };
+
   const canProceedStep1 = Number(totalHarta) > 0;
   const canProceedStep2 = selectedHeirs.size > 0;
 
