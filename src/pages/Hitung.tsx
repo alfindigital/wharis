@@ -23,6 +23,7 @@ import { cn } from '@/lib/utils';
 export default function Hitung() {
   const { toast } = useToast();
   const resultRef = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(1);
   const [totalHarta, setTotalHarta] = useState('');
   const [hutang, setHutang] = useState('');
   const [wasiat, setWasiat] = useState('');
