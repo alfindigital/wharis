@@ -55,6 +55,19 @@ export default function Pengaturan() {
   return (
     <PageShell title="Pengaturan" subtitle="Kelola aplikasi">
       <div className="space-y-4">
+        {/* Dark Mode */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Moon className="h-4 w-4 text-primary" /> Mode Gelap
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">Aktifkan tampilan gelap untuk kenyamanan mata.</p>
+            <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+          </CardContent>
+        </Card>
+
         {/* Install PWA */}
         <Card>
           <CardHeader className="pb-3">
