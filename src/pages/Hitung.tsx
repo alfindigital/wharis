@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, ArrowRight, Check, Plus, Minus, RotateCcw, Info } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Plus, Minus, RotateCcw, Info, FileDown, Image, Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import PageShell from '@/components/PageShell';
 import {
   calculateInheritance,
@@ -20,6 +21,8 @@ import { saveCalculation } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
 export default function Hitung() {
+  const { toast } = useToast();
+  const resultRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(1);
   const [totalHarta, setTotalHarta] = useState('');
   const [hutang, setHutang] = useState('');
@@ -68,6 +71,77 @@ export default function Hitung() {
     setWasiat('');
     setSelectedHeirs(new Map());
     setResult(null);
+  };
+
+  const buildResultText = (res: CalculationResult) => {
+    let text = `📋 HASIL PERHITUNGAN WARIS\n`;
+    text += `📅 ${new Date(res.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n`;
+    text += `💰 Harta Bersih: ${formatCurrency(res.netHarta)}\n`;
+    if (res.isAul) text += `⚠️ Aul (penyesuaian bagian)\n`;
+    if (res.isRadd) text += `🔄 Radd (pengembalian sisa)\n`;
+    text += `\n--- Pembagian ---\n`;
+    res.results.filter(r => !r.blocked).forEach(r => {
+      text += `\n👤 ${r.label} (${r.count} orang)\n`;
+      text += `   Bagian: ${r.fraction} (${r.percentage.toFixed(1)}%)\n`;
+      text += `   Total: ${formatCurrency(r.amount)}\n`;
+      if (r.count > 1) text += `   Per orang: ${formatCurrency(r.amountPerPerson)}\n`;
+      text += `   📖 ${r.dalil}\n`;
+    });
+    const blocked = res.results.filter(r => r.blocked);
+    if (blocked.length > 0) {
+      text += `\n--- Terhijab ---\n`;
+      blocked.forEach(r => {
+        text += `❌ ${r.label}: ${r.blockReason}\n`;
+      });
+    }
+    if (res.sisaHarta > 0) {
+      text += `\nSisa Harta: ${formatCurrency(res.sisaHarta)} (Baitul Mal)\n`;
+    }
+    text += `\n— Waris Islam App`;
+    return text;
+  };
+
+  const handleCopyText = async () => {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(buildResultText(result));
+      toast({ title: 'Berhasil', description: 'Hasil perhitungan disalin ke clipboard.' });
+    } catch {
+      toast({ title: 'Gagal', description: 'Tidak dapat menyalin teks.', variant: 'destructive' });
+    }
+  };
+
+  const handleSaveImage = async () => {
+    if (!resultRef.current) return;
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(resultRef.current, { backgroundColor: null, scale: 2 });
+      const link = document.createElement('a');
+      link.download = `waris-${Date.now()}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.9);
+      link.click();
+      toast({ title: 'Berhasil', description: 'Gambar tersimpan.' });
+    } catch {
+      toast({ title: 'Gagal', description: 'Tidak dapat menyimpan gambar.', variant: 'destructive' });
+    }
+  };
+
+  const handleExportPDF = async () => {
+    if (!resultRef.current) return;
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const { jsPDF } = await import('jspdf');
+      const canvas = await html2canvas(resultRef.current, { backgroundColor: '#ffffff', scale: 2 });
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgWidth = 190;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.addImage(imgData, 'JPEG', 10, 10, imgWidth, imgHeight);
+      pdf.save(`waris-${Date.now()}.pdf`);
+      toast({ title: 'Berhasil', description: 'PDF tersimpan.' });
+    } catch {
+      toast({ title: 'Gagal', description: 'Tidak dapat membuat PDF.', variant: 'destructive' });
+    }
   };
 
   const canProceedStep1 = Number(totalHarta) > 0;
@@ -244,70 +318,85 @@ export default function Hitung() {
       {/* Step 4: Hasil */}
       {step === 4 && result && (
         <div className="space-y-4">
-          {/* Info badges */}
-          <div className="flex gap-2 flex-wrap">
-            <Badge variant="secondary">
-              Harta Bersih: {formatCurrency(result.netHarta)}
-            </Badge>
-            {result.isAul && (
-              <Badge variant="destructive">
-                <Info className="h-3 w-3 mr-1" /> Aul (penyesuaian)
+          <div ref={resultRef} className="space-y-4 bg-background p-1">
+            {/* Info badges */}
+            <div className="flex gap-2 flex-wrap">
+              <Badge variant="secondary">
+                Harta Bersih: {formatCurrency(result.netHarta)}
               </Badge>
+              {result.isAul && (
+                <Badge variant="destructive">
+                  <Info className="h-3 w-3 mr-1" /> Aul (penyesuaian)
+                </Badge>
+              )}
+              {result.isRadd && (
+                <Badge className="bg-primary/10 text-primary border-primary/20">
+                  Radd (pengembalian sisa)
+                </Badge>
+              )}
+            </div>
+
+            {/* Results */}
+            {result.results.filter(r => !r.blocked).map(r => (
+              <Card key={r.type}>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-1">
+                    <div>
+                      <p className="font-semibold text-sm">{r.label}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {r.count} orang · Bagian: {r.fraction} ({r.percentage.toFixed(1)}%)
+                      </p>
+                    </div>
+                    <p className="font-bold text-primary text-sm">{formatCurrency(r.amount)}</p>
+                  </div>
+                  {r.count > 1 && (
+                    <p className="text-xs text-muted-foreground">
+                      Per orang: {formatCurrency(r.amountPerPerson)}
+                    </p>
+                  )}
+                  <Separator className="my-2" />
+                  <p className="text-xs text-muted-foreground italic">📖 {r.dalil}</p>
+                </CardContent>
+              </Card>
+            ))}
+
+            {/* Blocked heirs */}
+            {result.results.filter(r => r.blocked).length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground mb-2">Terhijab (Tidak Mendapat Bagian)</p>
+                {result.results.filter(r => r.blocked).map(r => (
+                  <Card key={r.type} className="mb-2 opacity-60">
+                    <CardContent className="p-3">
+                      <p className="text-sm font-medium">{r.label}</p>
+                      <p className="text-xs text-destructive">{r.blockReason}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             )}
-            {result.isRadd && (
-              <Badge className="bg-primary/10 text-primary border-primary/20">
-                Radd (pengembalian sisa)
-              </Badge>
+
+            {result.sisaHarta > 0 && (
+              <Card className="border-primary/20">
+                <CardContent className="p-4">
+                  <p className="text-sm font-semibold">Sisa Harta: {formatCurrency(result.sisaHarta)}</p>
+                  <p className="text-xs text-muted-foreground">Diserahkan ke Baitul Mal</p>
+                </CardContent>
+              </Card>
             )}
           </div>
 
-          {/* Results */}
-          {result.results.filter(r => !r.blocked).map(r => (
-            <Card key={r.type}>
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start mb-1">
-                  <div>
-                    <p className="font-semibold text-sm">{r.label}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {r.count} orang · Bagian: {r.fraction} ({r.percentage.toFixed(1)}%)
-                    </p>
-                  </div>
-                  <p className="font-bold text-primary text-sm">{formatCurrency(r.amount)}</p>
-                </div>
-                {r.count > 1 && (
-                  <p className="text-xs text-muted-foreground">
-                    Per orang: {formatCurrency(r.amountPerPerson)}
-                  </p>
-                )}
-                <Separator className="my-2" />
-                <p className="text-xs text-muted-foreground italic">📖 {r.dalil}</p>
-              </CardContent>
-            </Card>
-          ))}
-
-          {/* Blocked heirs */}
-          {result.results.filter(r => r.blocked).length > 0 && (
-            <div>
-              <p className="text-xs font-semibold text-muted-foreground mb-2">Terhijab (Tidak Mendapat Bagian)</p>
-              {result.results.filter(r => r.blocked).map(r => (
-                <Card key={r.type} className="mb-2 opacity-60">
-                  <CardContent className="p-3">
-                    <p className="text-sm font-medium">{r.label}</p>
-                    <p className="text-xs text-destructive">{r.blockReason}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          {result.sisaHarta > 0 && (
-            <Card className="border-primary/20">
-              <CardContent className="p-4">
-                <p className="text-sm font-semibold">Sisa Harta: {formatCurrency(result.sisaHarta)}</p>
-                <p className="text-xs text-muted-foreground">Diserahkan ke Baitul Mal</p>
-              </CardContent>
-            </Card>
-          )}
+          {/* Share/Export buttons */}
+          <div className="grid grid-cols-3 gap-2">
+            <Button variant="outline" size="sm" onClick={handleExportPDF}>
+              <FileDown className="h-4 w-4 mr-1" /> PDF
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleSaveImage}>
+              <Image className="h-4 w-4 mr-1" /> JPG
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleCopyText}>
+              <Copy className="h-4 w-4 mr-1" /> Salin
+            </Button>
+          </div>
 
           <Button className="w-full" onClick={handleReset}>
             <RotateCcw className="h-4 w-4 mr-1" /> Hitung Ulang
