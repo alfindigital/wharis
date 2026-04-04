@@ -19,7 +19,7 @@ export default function Index() {
   const tipOfDay = tips[new Date().getDate() % tips.length];
 
   return (
-    <PageShell title="wharis" subtitle="Kalkulator & Panduan Waris Syariah">
+    <PageShell title="WHARIS" subtitle="Kalkulator & Panduan Waris Syariah">
       {/* Hero CTA */}
       <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
         <CardContent className="p-5">
