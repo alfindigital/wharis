@@ -92,3 +92,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .interactive-card {
+    @apply transition-all duration-200 ease-out hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:shadow-sm;
+  }
+
+  .interactive-btn {
+    @apply transition-all duration-150 ease-out active:scale-95;
+  }
+}
