@@ -46,8 +46,8 @@ const guides = [
     title: 'Aul & Radd',
     desc: 'Penyesuaian jika total bagian melebihi atau kurang dari harta.',
     content: [
-      { heir: 'Aul', share: 'Total furudh > harta → semua bagian dikurangi proporsional', dalil: 'Ijtihad Umar bin Khattab (Ijma\')' },
-      { heir: 'Radd', share: 'Sisa harta → dikembalikan ke ashabul furudh (kecuali suami/istri)', dalil: 'Pendapat jumhur ulama' },
+      { heir: 'Aul', share: 'Total furudh > harta → semua bagian dikurangi proporsional', dalil: 'Ijtihad Umar bin Khattab radhiyallahu \'anhu (Ijma\' Sahabat)' },
+      { heir: 'Radd', share: 'Sisa harta → dikembalikan ke ashabul furudh (kecuali suami/istri)', dalil: 'Pendapat Umar, Ali, dan jumhur ulama' },
     ],
   },
   {
