@@ -12,7 +12,7 @@ const guides = [
       { heir: 'Anak Perempuan', share: '1/2 (tunggal) atau 2/3 (2+)', dalil: 'QS. An-Nisa: 11' },
       { heir: 'Ayah', share: '1/6 (ada anak laki)', dalil: 'QS. An-Nisa: 11' },
       { heir: 'Ibu', share: '1/6 (ada anak/2+ saudara) atau 1/3', dalil: 'QS. An-Nisa: 11' },
-      { heir: 'Nenek', share: '1/6', dalil: 'HR. Abu Dawud' },
+      { heir: 'Nenek', share: '1/6', dalil: 'HR. At-Tirmidzi no. 2101 (hasan shahih), Abu Dawud no. 2894' },
       { heir: 'Saudara Seibu', share: '1/6 (tunggal) atau 1/3 (2+)', dalil: 'QS. An-Nisa: 12' },
       { heir: 'Saudara Perempuan Sekandung', share: '1/2 (tunggal) atau 2/3 (2+)', dalil: 'QS. An-Nisa: 176' },
     ],
@@ -24,7 +24,7 @@ const guides = [
     content: [
       { heir: 'Anak Laki-laki', share: 'Sisa harta (asabah binafsih)', dalil: 'QS. An-Nisa: 11' },
       { heir: 'Ayah', share: 'Sisa (jika tidak ada anak laki)', dalil: 'QS. An-Nisa: 11' },
-      { heir: 'Kakek', share: 'Sisa (menggantikan ayah)', dalil: 'Ijma\' ulama' },
+      { heir: 'Kakek', share: 'Sisa (menggantikan ayah)', dalil: 'Ijma\' ulama berdasarkan qiyas pada QS. An-Nisa: 11' },
       { heir: 'Saudara Laki Sekandung', share: 'Sisa harta', dalil: 'QS. An-Nisa: 176' },
       { heir: 'Anak Perempuan + Anak Laki', share: 'Asabah bil ghair (2:1)', dalil: 'QS. An-Nisa: 11' },
     ],
@@ -38,7 +38,7 @@ const guides = [
       { heir: 'Nenek', share: 'Terhijab oleh Ibu', dalil: 'Ijma\' ulama' },
       { heir: 'Saudara Seibu', share: 'Terhijab oleh anak/ayah/kakek', dalil: 'QS. An-Nisa: 12' },
       { heir: 'Saudara Seayah', share: 'Terhijab oleh saudara laki sekandung', dalil: 'Ijma\' ulama' },
-      { heir: 'Cucu dari Anak Laki', share: 'Terhijab oleh anak laki-laki', dalil: 'Ijma\' ulama' },
+      { heir: 'Cucu dari Anak Laki', share: 'Terhijab oleh anak laki-laki', dalil: 'HR. Al-Bukhari no. 6732' },
     ],
   },
   {
@@ -46,8 +46,8 @@ const guides = [
     title: 'Aul & Radd',
     desc: 'Penyesuaian jika total bagian melebihi atau kurang dari harta.',
     content: [
-      { heir: 'Aul', share: 'Total furudh > harta → semua bagian dikurangi proporsional', dalil: 'Ijtihad Umar bin Khattab (Ijma\')' },
-      { heir: 'Radd', share: 'Sisa harta → dikembalikan ke ashabul furudh (kecuali suami/istri)', dalil: 'Pendapat jumhur ulama' },
+      { heir: 'Aul', share: 'Total furudh > harta → semua bagian dikurangi proporsional', dalil: 'Ijtihad Umar bin Khattab radhiyallahu \'anhu (Ijma\' Sahabat)' },
+      { heir: 'Radd', share: 'Sisa harta → dikembalikan ke ashabul furudh (kecuali suami/istri)', dalil: 'Pendapat Umar, Ali, dan jumhur ulama' },
     ],
   },
   {
@@ -55,10 +55,10 @@ const guides = [
     title: 'Dzawil Arham',
     desc: 'Kerabat yang tidak termasuk ashabul furudh maupun asabah.',
     content: [
-      { heir: 'Cucu dari Anak Perempuan', share: 'Dzawil arham — mewarisi jika tidak ada ahli waris lain', dalil: 'Pendapat sebagian ulama' },
-      { heir: 'Anak Saudara Perempuan', share: 'Dzawil arham', dalil: 'Pendapat sebagian ulama' },
-      { heir: 'Paman dari Ibu', share: 'Dzawil arham', dalil: 'Pendapat sebagian ulama' },
-      { heir: 'Bibi', share: 'Dzawil arham', dalil: 'Pendapat sebagian ulama' },
+      { heir: 'Cucu dari Anak Perempuan', share: 'Dzawil arham — mewarisi jika tidak ada ahli waris lain', dalil: 'Pendapat Abu Hanifah, Ahmad bin Hanbal (bukan ashabul furudh/asabah)' },
+      { heir: 'Anak Saudara Perempuan', share: 'Dzawil arham', dalil: 'Pendapat Hanafiyyah dan Hanabilah' },
+      { heir: 'Paman dari Ibu', share: 'Dzawil arham', dalil: 'Pendapat Hanafiyyah dan Hanabilah' },
+      { heir: 'Bibi', share: 'Dzawil arham', dalil: 'Pendapat Hanafiyyah dan Hanabilah' },
     ],
   },
 ];

@@ -204,7 +204,7 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
     if (hasHeir(heirs, 'ibu')) {
       addShare('nenek', 0, 1, 'Terhijab oleh Ibu', true, 'Nenek terhijab oleh Ibu');
     } else {
-      addShare('nenek', 1, 6, 'Hadits — Nenek mendapat 1/6');
+      addShare('nenek', 1, 6, 'HR. At-Tirmidzi no. 2101 (hasan shahih) — Nenek mendapat 1/6');
     }
   }
 

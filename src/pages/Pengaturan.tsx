@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { Download, Trash2, Info, Moon } from 'lucide-react';
+import { Download, Trash2, Info, Moon, Mail } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import { clearHistory, getHistory } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
@@ -123,6 +123,15 @@ export default function Pengaturan() {
             <p className="pt-2 text-[10px]">
               ⚠️ Aplikasi ini bersifat informatif. Untuk kasus waris yang kompleks, konsultasikan dengan ulama atau ahli fiqih.
             </p>
+            <Separator className="my-3" />
+            <p className="text-xs font-medium text-foreground">Kritik & Saran</p>
+            <a
+              href="mailto:gmail@alfindigital.com"
+              className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline mt-1"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              gmail@alfindigital.com
+            </a>
           </CardContent>
         </Card>
       </div>
