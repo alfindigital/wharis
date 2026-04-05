@@ -1,50 +1,66 @@
 
 
-# Aplikasi Waris Islam
+# Rombak Flow: Gabung Beranda + Kalkulator Jadi Satu Halaman
 
-Aplikasi kalkulator dan panduan waris sesuai syariat Islam dengan desain modern minimalist, mobile-first, PWA-ready.
+## Masalah Saat Ini
+- Beranda (`/`) hanya berisi welcome card, stats, dan tips — user harus klik lagi ke `/hitung`
+- Kalkulator pakai 4 step wizard — terlalu banyak klik
+- Flow tidak efisien: buka app → lihat welcome → klik "Mulai Hitung" → step 1 → step 2 → step 3 → step 4
 
-## Design
-- **Style**: Modern minimalist, clean white background, accent hijau islami (#059669 emerald)
-- **Layout**: Mobile-first, sticky bottom navigation
-- **Typography**: Clean sans-serif, Arabic-friendly
+## Solusi: Single-Page Calculator dengan Inline Form
 
-## Bottom Navigation (5 menu)
+Halaman utama (`/`) langsung menampilkan form kalkulator dalam satu scroll page, tanpa multi-step wizard.
 
-1. **🏠 Beranda** — Ringkasan fitur utama, quick access ke kalkulator
-2. **🧮 Hitung** — Kalkulator waris: input ahli waris & harta, hasil pembagian otomatis sesuai Al-Quran & Hadits
-3. **📖 Panduan** — Dalil & penjelasan hukum waris (ashabul furudh, ashabah, hijab, aul, radd)
-4. **📋 Riwayat** — Simpan & lihat kembali perhitungan sebelumnya (localStorage)
-5. **⚙️ Pengaturan** — Tema, bahasa, tentang aplikasi, info PWA install
+### Layout Baru Halaman Utama (`/`)
 
-## Halaman Detail
+```text
+┌──────────────────────────┐
+│  🏠 WHARIS               │  ← Header tetap
+├──────────────────────────┤
+│  💰 Input Harta          │  ← Section 1: Total harta, hutang, wasiat
+│  [Total Harta  ]         │     (3 input fields, compact)
+│  [Hutang] [Wasiat]       │     Hutang & wasiat side-by-side
+├──────────────────────────┤
+│  👥 Ahli Waris           │  ← Section 2: Chip selector + inline counter
+│  [Suami] [Istri] [Anak♂] │     Toggle chip = aktif + muncul counter
+│  Anak Laki-laki  [- 2 +] │     Counter langsung muncul di bawah
+│  Istri           [- 1 +] │
+├──────────────────────────┤
+│  📊 Ringkasan            │  ← Sticky summary: harta bersih + jumlah ahli waris
+│  [====  HITUNG  ====]    │  ← Tombol CTA besar
+├──────────────────────────┤
+│  📋 HASIL PEMBAGIAN      │  ← Muncul di bawah setelah hitung
+│  (card per ahli waris)   │     Auto-scroll ke hasil
+│  [PDF] [JPG] [Salin]     │
+├──────────────────────────┤
+│  💡 Tips Hukum Waris     │  ← Daily tip di bawah
+│  📋 Perhitungan Terakhir │  ← Riwayat terakhir (jika ada)
+└──────────────────────────┘
+│ 🏠  📖  📋  ⚙️          │  ← Bottom nav: 4 menu (Hitung dihapus)
+```
 
-### Beranda
-- Hero card "Hitung Waris Sekarang"
-- Statistik singkat (total perhitungan tersimpan)
-- Tips hukum waris harian
+### Perubahan Bottom Nav
 
-### Kalkulator Waris
-- Step 1: Input total harta peninggalan, hutang, wasiat
-- Step 2: Pilih ahli waris yang ada (suami/istri, anak laki/perempuan, ayah, ibu, saudara, dll)
-- Step 3: Input jumlah masing-masing ahli waris
-- Step 4: Hasil pembagian dengan bagian setiap ahli waris (nominal & persentase), beserta dalilnya
+Dari 5 menu jadi 4 (karena Beranda = Kalkulator):
+1. **Beranda** (/) — Kalkulator + ringkasan
+2. **Panduan** (/panduan)
+3. **Riwayat** (/riwayat)
+4. **Setelan** (/pengaturan)
 
-### Panduan
-- Accordion/list kategori: Ashabul Furudh, Ashabah, Hijab, Aul & Radd, Dzawil Arham
-- Setiap kategori berisi penjelasan singkat + dalil Al-Quran/Hadits
+### Detail Teknis
 
-### Riwayat
-- List card perhitungan tersimpan di localStorage
-- Bisa hapus atau lihat detail
+**File yang diubah:**
+1. **`src/pages/Index.tsx`** — Rombak total: gabungkan logic dari Hitung.tsx ke sini. Form kalkulator inline (bukan wizard), hasil muncul di bawah form setelah klik "Hitung". Pertahankan tips & riwayat terakhir di bagian bawah.
 
-### Pengaturan
-- Info aplikasi
-- Tombol install PWA
-- Reset data
+2. **`src/pages/Hitung.tsx`** — Hapus atau redirect ke `/`
 
-## PWA
-- Manifest dengan ikon & display standalone
-- Service worker via vite-plugin-pwa (production only, dengan iframe guard)
-- Installable dari browser
+3. **`src/components/BottomNav.tsx`** — Hapus menu "Hitung", sisakan 4 item
+
+4. **`src/App.tsx`** — Hapus route `/hitung` atau redirect ke `/`
+
+**Behavior baru:**
+- Saat user klik "Hitung", hasil muncul di bawah form + auto-scroll ke hasil
+- Tombol "Hitung Ulang" reset form dan scroll ke atas
+- Chip ahli waris: klik toggle aktif → langsung tampilkan counter inline (gabung step 2 & 3)
+- Semua dalam satu scroll — tidak ada step/wizard
 
