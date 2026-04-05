@@ -1,7 +1,3 @@
-import { Home, Calculator, BookOpen, ClipboardList, Settings } from 'lucide-react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-
 import { Home, BookOpen, ClipboardList, Settings } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
