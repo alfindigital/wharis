@@ -2,9 +2,12 @@ import { Home, Calculator, BookOpen, ClipboardList, Settings } from 'lucide-reac
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
+import { Home, BookOpen, ClipboardList, Settings } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+
 const navItems = [
   { path: '/', icon: Home, label: 'Beranda' },
-  { path: '/hitung', icon: Calculator, label: 'Hitung' },
   { path: '/panduan', icon: BookOpen, label: 'Panduan' },
   { path: '/riwayat', icon: ClipboardList, label: 'Riwayat' },
   { path: '/pengaturan', icon: Settings, label: 'Setelan' },
