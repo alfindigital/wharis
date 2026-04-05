@@ -12,7 +12,7 @@ const guides = [
       { heir: 'Anak Perempuan', share: '1/2 (tunggal) atau 2/3 (2+)', dalil: 'QS. An-Nisa: 11' },
       { heir: 'Ayah', share: '1/6 (ada anak laki)', dalil: 'QS. An-Nisa: 11' },
       { heir: 'Ibu', share: '1/6 (ada anak/2+ saudara) atau 1/3', dalil: 'QS. An-Nisa: 11' },
-      { heir: 'Nenek', share: '1/6', dalil: 'HR. Abu Dawud' },
+      { heir: 'Nenek', share: '1/6', dalil: 'HR. At-Tirmidzi no. 2101 (hasan shahih), Abu Dawud no. 2894' },
       { heir: 'Saudara Seibu', share: '1/6 (tunggal) atau 1/3 (2+)', dalil: 'QS. An-Nisa: 12' },
       { heir: 'Saudara Perempuan Sekandung', share: '1/2 (tunggal) atau 2/3 (2+)', dalil: 'QS. An-Nisa: 176' },
     ],
