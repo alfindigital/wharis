@@ -55,10 +55,10 @@ const guides = [
     title: 'Dzawil Arham',
     desc: 'Kerabat yang tidak termasuk ashabul furudh maupun asabah.',
     content: [
-      { heir: 'Cucu dari Anak Perempuan', share: 'Dzawil arham — mewarisi jika tidak ada ahli waris lain', dalil: 'Pendapat sebagian ulama' },
-      { heir: 'Anak Saudara Perempuan', share: 'Dzawil arham', dalil: 'Pendapat sebagian ulama' },
-      { heir: 'Paman dari Ibu', share: 'Dzawil arham', dalil: 'Pendapat sebagian ulama' },
-      { heir: 'Bibi', share: 'Dzawil arham', dalil: 'Pendapat sebagian ulama' },
+      { heir: 'Cucu dari Anak Perempuan', share: 'Dzawil arham — mewarisi jika tidak ada ahli waris lain', dalil: 'Pendapat Abu Hanifah, Ahmad bin Hanbal (bukan ashabul furudh/asabah)' },
+      { heir: 'Anak Saudara Perempuan', share: 'Dzawil arham', dalil: 'Pendapat Hanafiyyah dan Hanabilah' },
+      { heir: 'Paman dari Ibu', share: 'Dzawil arham', dalil: 'Pendapat Hanafiyyah dan Hanabilah' },
+      { heir: 'Bibi', share: 'Dzawil arham', dalil: 'Pendapat Hanafiyyah dan Hanabilah' },
     ],
   },
 ];
