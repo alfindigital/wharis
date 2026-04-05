@@ -24,7 +24,7 @@ const guides = [
     content: [
       { heir: 'Anak Laki-laki', share: 'Sisa harta (asabah binafsih)', dalil: 'QS. An-Nisa: 11' },
       { heir: 'Ayah', share: 'Sisa (jika tidak ada anak laki)', dalil: 'QS. An-Nisa: 11' },
-      { heir: 'Kakek', share: 'Sisa (menggantikan ayah)', dalil: 'Ijma\' ulama' },
+      { heir: 'Kakek', share: 'Sisa (menggantikan ayah)', dalil: 'Ijma\' ulama berdasarkan qiyas pada QS. An-Nisa: 11' },
       { heir: 'Saudara Laki Sekandung', share: 'Sisa harta', dalil: 'QS. An-Nisa: 176' },
       { heir: 'Anak Perempuan + Anak Laki', share: 'Asabah bil ghair (2:1)', dalil: 'QS. An-Nisa: 11' },
     ],

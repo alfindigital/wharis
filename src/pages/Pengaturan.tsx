@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
-import { Download, Trash2, Info, Moon } from 'lucide-react';
+import { Download, Trash2, Info, Moon, Mail } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import { clearHistory, getHistory } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
