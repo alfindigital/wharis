@@ -123,6 +123,15 @@ export default function Pengaturan() {
             <p className="pt-2 text-[10px]">
               ⚠️ Aplikasi ini bersifat informatif. Untuk kasus waris yang kompleks, konsultasikan dengan ulama atau ahli fiqih.
             </p>
+            <Separator className="my-3" />
+            <p className="text-xs font-medium text-foreground">Kritik & Saran</p>
+            <a
+              href="mailto:gmail@alfindigital.com"
+              className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline mt-1"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              gmail@alfindigital.com
+            </a>
           </CardContent>
         </Card>
       </div>
