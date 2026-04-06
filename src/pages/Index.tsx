@@ -20,13 +20,6 @@ import {
 import { saveCalculation, getHistory } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
-const tips = [
-  'Wasiat maksimal 1/3 dari harta peninggalan (HR. Bukhari & Muslim)',
-  'Hutang wajib dilunasi sebelum harta dibagikan kepada ahli waris',
-  'Anak laki-laki mendapat bagian 2x anak perempuan (QS. An-Nisa: 11)',
-  'Suami mendapat 1/2 jika tidak ada anak, 1/4 jika ada anak',
-  'Ibu mendapat 1/6 jika ada anak atau 2+ saudara',
-];
 
 export default function Index() {
   const { toast } = useToast();
@@ -40,7 +33,7 @@ export default function Index() {
   const [result, setResult] = useState<CalculationResult | null>(null);
 
   const history = getHistory();
-  const tipOfDay = tips[new Date().getDate() % tips.length];
+  
 
   const netHarta = Math.max(0, (Number(totalHarta) || 0) - (Number(hutang) || 0) - (Number(wasiat) || 0));
 
@@ -385,13 +378,6 @@ export default function Index() {
         </div>
       )}
 
-      {/* Daily Tip */}
-      <Card className="mt-4 border-primary/20 bg-primary/5">
-        <CardContent className="p-4">
-          <p className="text-xs font-semibold text-primary mb-1">💡 Tips Hukum Waris</p>
-          <p className="text-sm text-foreground">{tipOfDay}</p>
-        </CardContent>
-      </Card>
 
       {/* Last calculation */}
       {history.length > 0 && !result && (
