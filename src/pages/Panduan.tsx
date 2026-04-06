@@ -66,7 +66,7 @@ const guides = [
 export default function Panduan() {
   return (
     <PageShell title="Panduan Waris" subtitle="Dalil & penjelasan hukum waris Islam">
-      <Accordion type="single" collapsible className="space-y-2">
+      <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">
             <AccordionTrigger className="text-sm font-semibold hover:no-underline">
