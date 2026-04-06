@@ -179,7 +179,7 @@ export default function Index() {
             <Input
               id="harta"
               type="number"
-              placeholder="Contoh: 1000000000"
+              placeholder="0"
               value={totalHarta}
               onChange={e => setTotalHarta(e.target.value)}
               className="mt-1"
