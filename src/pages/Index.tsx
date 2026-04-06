@@ -378,13 +378,6 @@ export default function Index() {
         </div>
       )}
 
-      {/* Daily Tip */}
-      <Card className="mt-4 border-primary/20 bg-primary/5">
-        <CardContent className="p-4">
-          <p className="text-xs font-semibold text-primary mb-1">💡 Tips Hukum Waris</p>
-          <p className="text-sm text-foreground">{tipOfDay}</p>
-        </CardContent>
-      </Card>
 
       {/* Last calculation */}
       {history.length > 0 && !result && (

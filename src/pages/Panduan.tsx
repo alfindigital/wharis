@@ -97,6 +97,17 @@ export default function Panduan() {
           </AccordionItem>
         ))}
       </Accordion>
+
+      {/* Tips */}
+      <div className="mt-4 space-y-2">
+        <p className="text-sm font-semibold flex items-center gap-2">💡 Tips Penting</p>
+        {tips.map((tip, i) => (
+          <div key={i} className="bg-primary/10 rounded-lg p-3">
+            <p className="text-sm">{tip.text}</p>
+            <p className="text-xs text-primary mt-1 italic">📖 {tip.dalil}</p>
+          </div>
+        ))}
+      </div>
     </PageShell>
   );
 }
