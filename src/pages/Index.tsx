@@ -33,7 +33,7 @@ export default function Index() {
   const [result, setResult] = useState<CalculationResult | null>(null);
 
   const history = getHistory();
-  const tipOfDay = tips[new Date().getDate() % tips.length];
+  
 
   const netHarta = Math.max(0, (Number(totalHarta) || 0) - (Number(hutang) || 0) - (Number(wasiat) || 0));
 
