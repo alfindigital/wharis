@@ -20,13 +20,6 @@ import {
 import { saveCalculation, getHistory } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
-const tips = [
-  'Wasiat maksimal 1/3 dari harta peninggalan (HR. Bukhari & Muslim)',
-  'Hutang wajib dilunasi sebelum harta dibagikan kepada ahli waris',
-  'Anak laki-laki mendapat bagian 2x anak perempuan (QS. An-Nisa: 11)',
-  'Suami mendapat 1/2 jika tidak ada anak, 1/4 jika ada anak',
-  'Ibu mendapat 1/6 jika ada anak atau 2+ saudara',
-];
 
 export default function Index() {
   const { toast } = useToast();
