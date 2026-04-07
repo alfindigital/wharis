@@ -19,7 +19,7 @@ export default function Riwayat() {
 
   if (history.length === 0) {
     return (
-      <PageShell title="Riwayat" subtitle="Perhitungan tersimpan">
+      <PageShell title="WHARIS" subtitle="Riwayat Perhitungan">
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
           <p className="text-sm">Belum ada riwayat perhitungan</p>
           <p className="text-xs mt-1">Mulai hitung waris untuk menyimpan riwayat</p>
@@ -29,7 +29,7 @@ export default function Riwayat() {
   }
 
   return (
-    <PageShell title="Riwayat" subtitle={`${history.length} perhitungan tersimpan`}>
+    <PageShell title="WHARIS" subtitle={`${history.length} perhitungan tersimpan`}>
       <div className="space-y-3">
         {history.map((item: CalculationResult) => (
           <Card key={item.id}>
