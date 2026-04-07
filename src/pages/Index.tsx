@@ -17,7 +17,7 @@ import {
   HeirType,
   CalculationResult,
 } from '@/lib/inheritance';
-import { saveCalculation, getHistory } from '@/lib/storage';
+import { saveCalculation } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
 
@@ -32,8 +32,8 @@ export default function Index() {
   const [selectedHeirs, setSelectedHeirs] = useState<Map<HeirType, number>>(new Map());
   const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const history = getHistory();
-  
+
+
 
   const netHarta = Math.max(0, (Number(totalHarta) || 0) - (Number(hutang) || 0) - (Number(wasiat) || 0));
 
@@ -379,21 +379,6 @@ export default function Index() {
       )}
 
 
-      {/* Last calculation */}
-      {history.length > 0 && !result && (
-        <Card className="mt-3">
-          <CardContent className="p-4">
-            <p className="text-xs font-semibold text-muted-foreground mb-1">📋 Perhitungan Terakhir</p>
-            <p className="text-sm font-medium">
-              {new Date(history[0].date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Harta bersih: {formatCurrency(history[0].netHarta)}
-              {' · '}{history[0].results.filter(r => !r.blocked).length} ahli waris
-            </p>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Bottom spacer for nav */}
       <div className="h-4" />
