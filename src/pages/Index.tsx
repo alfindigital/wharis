@@ -275,7 +275,7 @@ export default function Index() {
 
       {/* Sticky CTA */}
       <div className="sticky bottom-20 z-40 mt-3">
-        <Card className={cn("border-primary/30 shadow-lg backdrop-blur-sm", canCalculate ? "bg-primary/15 dark:bg-primary/20" : "bg-muted/80")}>
+        <Card className={cn("border-primary/40 shadow-xl backdrop-blur-md", canCalculate ? "bg-primary/30 dark:bg-primary/35" : "bg-muted/95 dark:bg-muted/90")}>
           <CardContent className="p-3 space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Harta Bersih</span>
