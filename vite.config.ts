@@ -25,8 +25,8 @@ export default defineConfig(({ mode }) => ({
         navigateFallbackDenylist: [/^\/~oauth/],
       },
       manifest: {
-        name: "wharis - Kalkulator Waris Syariah",
-        short_name: "wharis",
+        name: "WHARIS - Kalkulator Waris Syariah",
+        short_name: "WHARIS",
         description: "Kalkulator dan panduan pembagian waris sesuai syariat Islam",
         theme_color: "#059669",
         background_color: "#ffffff",
