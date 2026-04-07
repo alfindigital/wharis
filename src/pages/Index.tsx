@@ -17,7 +17,7 @@ import {
   HeirType,
   CalculationResult,
 } from '@/lib/inheritance';
-import { saveCalculation, getHistory } from '@/lib/storage';
+import { saveCalculation } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
 
