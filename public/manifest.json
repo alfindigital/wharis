@@ -1,6 +1,6 @@
 {
-  "name": "wharis - Kalkulator Waris Syariah",
-  "short_name": "wharis",
+  "name": "WHARIS - Kalkulator Waris Syariah",
+  "short_name": "WHARIS",
   "description": "Kalkulator dan panduan pembagian waris sesuai syariat Islam",
   "start_url": "/",
   "display": "standalone",
