@@ -379,21 +379,6 @@ export default function Index() {
       )}
 
 
-      {/* Last calculation */}
-      {history.length > 0 && !result && (
-        <Card className="mt-3">
-          <CardContent className="p-4">
-            <p className="text-xs font-semibold text-muted-foreground mb-1">📋 Perhitungan Terakhir</p>
-            <p className="text-sm font-medium">
-              {new Date(history[0].date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Harta bersih: {formatCurrency(history[0].netHarta)}
-              {' · '}{history[0].results.filter(r => !r.blocked).length} ahli waris
-            </p>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Bottom spacer for nav */}
       <div className="h-4" />
