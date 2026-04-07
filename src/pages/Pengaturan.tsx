@@ -53,7 +53,7 @@ export default function Pengaturan() {
   };
 
   return (
-    <PageShell title="Pengaturan" subtitle="Kelola aplikasi">
+    <PageShell title="WHARIS" subtitle="Pengaturan">
       <div className="space-y-4">
         {/* Dark Mode */}
         <Card>

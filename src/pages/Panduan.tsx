@@ -73,7 +73,7 @@ const guides = [
 
 export default function Panduan() {
   return (
-    <PageShell title="Panduan Waris" subtitle="Dalil & penjelasan hukum waris Islam">
+    <PageShell title="WHARIS" subtitle="Panduan Waris Islam">
       <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">

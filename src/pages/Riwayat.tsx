@@ -29,7 +29,7 @@ export default function Riwayat() {
   }
 
   return (
-    <PageShell title="Riwayat" subtitle={`${history.length} perhitungan tersimpan`}>
+    <PageShell title="WHARIS" subtitle={`${history.length} perhitungan tersimpan`}>
       <div className="space-y-3">
         {history.map((item: CalculationResult) => (
           <Card key={item.id}>
