@@ -32,8 +32,8 @@ export default function Index() {
   const [selectedHeirs, setSelectedHeirs] = useState<Map<HeirType, number>>(new Map());
   const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const history = getHistory();
-  
+
+
 
   const netHarta = Math.max(0, (Number(totalHarta) || 0) - (Number(hutang) || 0) - (Number(wasiat) || 0));
 
