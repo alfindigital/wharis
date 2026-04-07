@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import BrandLogo from './BrandLogo';
+import ThemeToggle from './ThemeToggle';
 
 interface Props {
   title: string;
@@ -13,10 +14,11 @@ export default function PageShell({ title, subtitle, children }: Props) {
       <header className="sticky top-0 z-40 border-b bg-card/95 backdrop-blur-lg animate-fade-in">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-2.5">
           <BrandLogo className="size-9 shrink-0" />
-          <div>
+          <div className="flex-1">
             <h1 className="text-lg font-bold text-foreground">{title}</h1>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
+          <ThemeToggle />
         </div>
       </header>
       <main className="max-w-lg mx-auto px-4 py-4 animate-fade-in" style={{ animationDelay: '0.05s', animationFillMode: 'both' }}>
