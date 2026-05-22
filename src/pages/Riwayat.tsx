@@ -4,9 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import PageShell from '@/components/PageShell';
+import SEO from '@/components/SEO';
 import { getHistory, deleteCalculation } from '@/lib/storage';
 import { formatCurrency, HEIR_LABELS, CalculationResult } from '@/lib/inheritance';
 import { Separator } from '@/components/ui/separator';
+
+const seo = (
+  <SEO
+    title="Riwayat Perhitungan Waris — WHARIS"
+    description="Daftar riwayat perhitungan pembagian waris yang tersimpan di perangkat Anda."
+    path="/riwayat"
+  />
+);
 
 export default function Riwayat() {
   const [history, setHistory] = useState(getHistory);
@@ -19,7 +28,8 @@ export default function Riwayat() {
 
   if (history.length === 0) {
     return (
-      <PageShell title="WHARIS" subtitle="Riwayat Perhitungan">
+      <PageShell title="WHARIS" subtitle="Riwayat Perhitungan" headingSr="Riwayat Perhitungan Waris — WHARIS">
+        {seo}
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
           <p className="text-sm">Belum ada riwayat perhitungan</p>
           <p className="text-xs mt-1">Mulai hitung waris untuk menyimpan riwayat</p>
@@ -29,7 +39,9 @@ export default function Riwayat() {
   }
 
   return (
-    <PageShell title="WHARIS" subtitle={`${history.length} perhitungan tersimpan`}>
+    <PageShell title="WHARIS" subtitle={`${history.length} perhitungan tersimpan`} headingSr="Riwayat Perhitungan Waris — WHARIS">
+      {seo}
+      <h2 className="sr-only">Daftar Riwayat Perhitungan</h2>
       <div className="space-y-3">
         {history.map((item: CalculationResult) => (
           <Card key={item.id}>
@@ -44,10 +56,10 @@ export default function Riwayat() {
                   </p>
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setExpanded(expanded === item.id ? null : item.id)}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setExpanded(expanded === item.id ? null : item.id)} aria-label={expanded === item.id ? 'Tutup detail' : 'Buka detail perhitungan'}>
                     {expanded === item.id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </Button>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(item.id)}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(item.id)} aria-label="Hapus riwayat perhitungan">
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

@@ -5,6 +5,8 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Download, Trash2, Info, Moon, Mail } from 'lucide-react';
 import PageShell from '@/components/PageShell';
+import SEO from '@/components/SEO';
+import { Label } from '@/components/ui/label';
 import { clearHistory, getHistory } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
 
@@ -53,24 +55,34 @@ export default function Pengaturan() {
   };
 
   return (
-    <PageShell title="WHARIS" subtitle="Pengaturan">
+    <PageShell title="WHARIS" subtitle="Pengaturan" headingSr="Pengaturan — WHARIS">
+      <SEO
+        title="Pengaturan — WHARIS"
+        description="Atur mode gelap, install aplikasi WHARIS ke perangkat, dan kelola data riwayat perhitungan waris."
+        path="/pengaturan"
+      />
       <div className="space-y-4">
         {/* Dark Mode */}
+        <section aria-labelledby="setting-darkmode">
         <Card>
           <CardHeader className="pb-3">
+            <h2 id="setting-darkmode" className="sr-only">Mode Gelap</h2>
             <CardTitle className="text-base flex items-center gap-2">
               <Moon className="h-4 w-4 text-primary" /> Mode Gelap
             </CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
-            <p className="text-xs text-muted-foreground">Aktifkan tampilan gelap untuk kenyamanan mata.</p>
-            <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+            <Label htmlFor="darkmode-switch" className="text-xs text-muted-foreground font-normal cursor-pointer">Aktifkan tampilan gelap untuk kenyamanan mata.</Label>
+            <Switch id="darkmode-switch" checked={darkMode} onCheckedChange={setDarkMode} aria-label="Aktifkan mode gelap" />
           </CardContent>
         </Card>
+        </section>
 
         {/* Install PWA */}
+        <section aria-labelledby="setting-install">
         <Card>
           <CardHeader className="pb-3">
+            <h2 id="setting-install" className="sr-only">Install Aplikasi</h2>
             <CardTitle className="text-base flex items-center gap-2">
               <Download className="h-4 w-4 text-primary" /> Install Aplikasi
             </CardTitle>
@@ -84,10 +96,13 @@ export default function Pengaturan() {
             </Button>
           </CardContent>
         </Card>
+        </section>
 
         {/* Data */}
+        <section aria-labelledby="setting-data">
         <Card>
           <CardHeader className="pb-3">
+            <h2 id="setting-data" className="sr-only">Data</h2>
             <CardTitle className="text-base flex items-center gap-2">
               <Trash2 className="h-4 w-4 text-destructive" /> Data
             </CardTitle>
@@ -101,12 +116,15 @@ export default function Pengaturan() {
             </Button>
           </CardContent>
         </Card>
+        </section>
 
         <Separator />
 
         {/* About */}
+        <section aria-labelledby="setting-about">
         <Card>
           <CardHeader className="pb-3">
+            <h2 id="setting-about" className="sr-only">Tentang</h2>
             <CardTitle className="text-base flex items-center gap-2">
               <Info className="h-4 w-4 text-primary" /> Tentang
             </CardTitle>
@@ -134,6 +152,7 @@ export default function Pengaturan() {
             </a>
           </CardContent>
         </Card>
+        </section>
       </div>
     </PageShell>
   );

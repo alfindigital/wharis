@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import PageShell from '@/components/PageShell';
+import SEO from '@/components/SEO';
 
 const tips = [
   { text: 'Wasiat maksimal 1/3 dari harta peninggalan', dalil: 'HR. Bukhari no. 2742, Muslim no. 1628' },
@@ -71,15 +72,36 @@ const guides = [
   },
 ];
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: guides.flatMap(g =>
+    g.content.map(item => ({
+      '@type': 'Question',
+      name: `${g.title}: ${item.heir}`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `${item.share}. Dalil: ${item.dalil}`,
+      },
+    }))
+  ),
+};
+
 export default function Panduan() {
   return (
-    <PageShell title="WHARIS" subtitle="Panduan Waris Islam">
+    <PageShell title="WHARIS" subtitle="Panduan Waris Islam" headingSr="Panduan Waris Islam — WHARIS">
+      <SEO
+        title="Panduan Waris Islam — Ashabul Furudh, Asabah & Hijab | WHARIS"
+        description="Panduan lengkap pembagian waris menurut syariat Islam: ashabul furudh, asabah, hijab, aul & radd, serta dzawil arham beserta dalilnya."
+        path="/panduan"
+        jsonLd={faqJsonLd}
+      />
       <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">
             <AccordionTrigger className="text-sm font-semibold hover:no-underline">
               <div className="text-left">
-                <p>{g.title}</p>
+                <h2 className="text-sm font-semibold">{g.title}</h2>
                 <p className="text-xs font-normal text-muted-foreground">{g.desc}</p>
               </div>
             </AccordionTrigger>
@@ -100,7 +122,7 @@ export default function Panduan() {
 
       {/* Tips */}
       <div className="mt-4 space-y-2">
-        <p className="text-sm font-semibold flex items-center gap-2">💡 Tips Penting</p>
+        <h2 className="text-sm font-semibold flex items-center gap-2">💡 Tips Penting</h2>
         {tips.map((tip, i) => (
           <div key={i} className="bg-primary/10 rounded-lg p-3">
             <p className="text-sm">{tip.text}</p>

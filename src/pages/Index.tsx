@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Plus, Minus, RotateCcw, FileDown, Image, Copy, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PageShell from '@/components/PageShell';
+import SEO from '@/components/SEO';
 import {
   calculateInheritance,
   formatCurrency,
@@ -158,15 +159,20 @@ export default function Index() {
   const canCalculate = (Number(totalHarta) > 0) && selectedHeirs.size > 0;
 
   return (
-    <PageShell title="WHARIS" subtitle="Kalkulator Waris Syariah">
+    <PageShell title="WHARIS" subtitle="Kalkulator Waris Syariah" headingSr="WHARIS — Kalkulator Waris Islam sesuai Syariat">
+      <SEO
+        title="WHARIS — Kalkulator Waris Islam sesuai Syariat"
+        description="Hitung pembagian waris (faraidh) otomatis sesuai Al-Quran & Hadits shahih. Masukkan harta, hutang, wasiat, dan ahli waris."
+        path="/"
+      />
       <div ref={topRef} />
 
       {/* Section 1: Input Harta */}
       <Card>
         <CardContent className="p-4 space-y-3">
-          <p className="text-sm font-semibold flex items-center gap-2">
+          <h2 className="text-sm font-semibold flex items-center gap-2">
             💰 Harta Peninggalan
-          </p>
+          </h2>
           <div>
             <Label htmlFor="harta" className="text-xs">Total Harta (Rp) *</Label>
             <Input
@@ -213,9 +219,9 @@ export default function Index() {
       {/* Section 2: Ahli Waris — chips + inline counter */}
       <Card className="mt-3">
         <CardContent className="p-4 space-y-3">
-          <p className="text-sm font-semibold flex items-center gap-2">
+          <h2 className="text-sm font-semibold flex items-center gap-2">
             👥 Ahli Waris
-          </p>
+          </h2>
           {HEIR_CATEGORIES.map(cat => (
             <div key={cat.label}>
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">{cat.label}</p>
@@ -253,15 +259,17 @@ export default function Index() {
                       className="h-7 w-7"
                       onClick={() => updateHeirCount(type, -1)}
                       disabled={count <= 1}
+                      aria-label={`Kurangi jumlah ${HEIR_LABELS[type]}`}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
-                    <span className="w-6 text-center font-semibold text-sm">{count}</span>
+                    <span className="w-6 text-center font-semibold text-sm" aria-label={`Jumlah ${HEIR_LABELS[type]}: ${count}`}>{count}</span>
                     <Button
                       variant="outline"
                       size="icon"
                       className="h-7 w-7"
                       onClick={() => updateHeirCount(type, 1)}
+                      aria-label={`Tambah jumlah ${HEIR_LABELS[type]}`}
                     >
                       <Plus className="h-3 w-3" />
                     </Button>
@@ -296,7 +304,7 @@ export default function Index() {
       {result && (
         <div ref={resultRef} className="mt-4 space-y-3">
           <Separator />
-          <p className="text-sm font-bold flex items-center gap-2">📋 Hasil Pembagian Waris</p>
+          <h2 className="text-sm font-bold flex items-center gap-2">📋 Hasil Pembagian Waris</h2>
 
           {/* Info badges */}
           <div className="flex gap-2 flex-wrap">

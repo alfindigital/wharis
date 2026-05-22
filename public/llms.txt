@@ -1,0 +1,12 @@
+# WHARIS
+
+> Kalkulator dan panduan pembagian waris (faraidh) sesuai syariat Islam berdasarkan Al-Quran dan Hadits shahih.
+
+WHARIS membantu umat Muslim menghitung pembagian harta waris secara otomatis sesuai hukum faraidh, dilengkapi dalil dari Al-Quran (QS. An-Nisa: 11, 12, 176) dan hadits shahih. Aplikasi mencakup perhitungan ashabul furudh, asabah, hijab, aul, dan radd.
+
+## Pages
+
+- [Kalkulator Waris](/): Input harta, hutang, wasiat, dan ahli waris untuk mendapat pembagian otomatis dengan dalil.
+- [Panduan Waris](/panduan): Penjelasan lengkap ashabul furudh, asabah, hijab, aul & radd, dan dzawil arham beserta dalilnya.
+- [Riwayat Perhitungan](/riwayat): Daftar perhitungan waris yang tersimpan di perangkat.
+- [Pengaturan](/pengaturan): Mode gelap, install PWA, dan informasi aplikasi.
