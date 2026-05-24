@@ -304,7 +304,9 @@ export default function Index() {
       {result && (
         <div ref={resultRef} className="mt-4 space-y-3">
           <Separator />
-          <h2 className="text-sm font-bold flex items-center gap-2">📋 Hasil Pembagian Waris</h2>
+          <h2 className="font-brand text-lg font-semibold flex items-center gap-2 text-foreground">
+            <BookOpen className="h-4 w-4 text-primary" /> Hasil Pembagian
+          </h2>
 
           {/* Info badges */}
           <div className="flex gap-2 flex-wrap">
@@ -312,10 +314,10 @@ export default function Index() {
               Harta Bersih: {formatCurrency(result.netHarta)}
             </Badge>
             {result.isAul && (
-              <Badge variant="destructive">⚠️ Aul</Badge>
+              <Badge variant="destructive" className="gap-1"><AlertTriangle className="h-3 w-3" /> Aul</Badge>
             )}
             {result.isRadd && (
-              <Badge className="bg-primary/10 text-primary border-primary/20">🔄 Radd</Badge>
+              <Badge className="bg-primary/10 text-primary border-primary/20 gap-1"><RefreshCw className="h-3 w-3" /> Radd</Badge>
             )}
           </div>
 
