@@ -219,8 +219,8 @@ export default function Index() {
       {/* Section 2: Ahli Waris — chips + inline counter */}
       <Card className="mt-3">
         <CardContent className="p-4 space-y-3">
-          <h2 className="text-sm font-semibold flex items-center gap-2">
-            👥 Ahli Waris
+          <h2 className="font-brand text-base font-semibold flex items-center gap-2 text-foreground">
+            <Users className="h-4 w-4 text-primary" /> Ahli Waris
           </h2>
           {HEIR_CATEGORIES.map(cat => (
             <div key={cat.label}>
