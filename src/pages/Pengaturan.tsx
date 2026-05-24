@@ -13,8 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 export default function Pengaturan() {
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') === 'dark' ||
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      return localStorage.getItem('theme') === 'dark';
     }
     return false;
   });
@@ -130,7 +129,7 @@ export default function Pengaturan() {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-xs text-muted-foreground space-y-1">
-            <p><strong>Waris Islam</strong> v1.0</p>
+            <p><strong className="font-brand text-foreground text-sm">WHARIS</strong> <span className="text-[10px]">v1.0</span></p>
             <p>Kalkulator & panduan pembagian waris sesuai syariat Islam berdasarkan Al-Quran dan Hadits.</p>
             <p className="pt-2">Referensi utama:</p>
             <ul className="list-disc list-inside space-y-0.5">
@@ -139,7 +138,7 @@ export default function Pengaturan() {
               <li>Ijma' ulama tentang hukum waris</li>
             </ul>
             <p className="pt-2 text-[10px]">
-              ⚠️ Aplikasi ini bersifat informatif. Untuk kasus waris yang kompleks, konsultasikan dengan ulama atau ahli fiqih.
+              Aplikasi ini bersifat informatif. Untuk kasus waris yang kompleks, konsultasikan dengan ulama atau ahli fiqih.
             </p>
             <Separator className="my-3" />
             <p className="text-xs font-medium text-foreground">Kritik & Saran</p>

@@ -99,10 +99,10 @@ export default function Panduan() {
       <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">
-            <AccordionTrigger className="text-sm font-semibold hover:no-underline">
+            <AccordionTrigger className="hover:no-underline py-3">
               <div className="text-left">
-                <h2 className="text-sm font-semibold">{g.title}</h2>
-                <p className="text-xs font-normal text-muted-foreground">{g.desc}</p>
+                <h2 className="font-brand text-base font-semibold text-foreground">{g.title}</h2>
+                <p className="text-xs font-normal text-muted-foreground mt-0.5">{g.desc}</p>
               </div>
             </AccordionTrigger>
             <AccordionContent>
@@ -111,7 +111,7 @@ export default function Panduan() {
                   <div key={i} className="bg-muted/50 rounded-lg p-3">
                     <p className="text-sm font-medium">{item.heir}</p>
                     <p className="text-xs text-muted-foreground">{item.share}</p>
-                    <p className="text-xs text-primary mt-1 italic">📖 {item.dalil}</p>
+                    <p className="text-[11px] text-primary mt-1 italic font-serif">{item.dalil}</p>
                   </div>
                 ))}
               </div>
@@ -122,11 +122,11 @@ export default function Panduan() {
 
       {/* Tips */}
       <div className="mt-4 space-y-2">
-        <h2 className="text-sm font-semibold flex items-center gap-2">💡 Tips Penting</h2>
+        <h2 className="font-brand text-base font-semibold">Tips Penting</h2>
         {tips.map((tip, i) => (
-          <div key={i} className="bg-primary/10 rounded-lg p-3">
+          <div key={i} className="bg-primary/5 border border-primary/15 rounded-lg p-3">
             <p className="text-sm">{tip.text}</p>
-            <p className="text-xs text-primary mt-1 italic">📖 {tip.dalil}</p>
+            <p className="text-[11px] text-primary mt-1 italic font-serif">{tip.dalil}</p>
           </div>
         ))}
       </div>

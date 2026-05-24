@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Plus, Minus, RotateCcw, FileDown, Image, Copy, ChevronDown } from 'lucide-react';
+import { Plus, Minus, RotateCcw, FileDown, Image, Copy, Wallet, Users, Calculator, BookOpen, AlertTriangle, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PageShell from '@/components/PageShell';
 import SEO from '@/components/SEO';
@@ -86,24 +86,24 @@ export default function Index() {
   };
 
   const buildResultText = (res: CalculationResult) => {
-    let text = `📋 HASIL PERHITUNGAN WARIS\n`;
-    text += `📅 ${new Date(res.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n`;
-    text += `💰 Harta Bersih: ${formatCurrency(res.netHarta)}\n`;
-    if (res.isAul) text += `⚠️ Aul (penyesuaian bagian)\n`;
-    if (res.isRadd) text += `🔄 Radd (pengembalian sisa)\n`;
+    let text = `HASIL PERHITUNGAN WARIS\n`;
+    text += `${new Date(res.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n`;
+    text += `Harta Bersih: ${formatCurrency(res.netHarta)}\n`;
+    if (res.isAul) text += `Aul (penyesuaian bagian)\n`;
+    if (res.isRadd) text += `Radd (pengembalian sisa)\n`;
     text += `\n--- Pembagian ---\n`;
     res.results.filter(r => !r.blocked).forEach(r => {
-      text += `\n👤 ${r.label} (${r.count} orang)\n`;
+      text += `\n${r.label} (${r.count} orang)\n`;
       text += `   Bagian: ${r.fraction} (${r.percentage.toFixed(1)}%)\n`;
       text += `   Total: ${formatCurrency(r.amount)}\n`;
       if (r.count > 1) text += `   Per orang: ${formatCurrency(r.amountPerPerson)}\n`;
-      text += `   📖 ${r.dalil}\n`;
+      text += `   Dalil: ${r.dalil}\n`;
     });
     const blocked = res.results.filter(r => r.blocked);
     if (blocked.length > 0) {
       text += `\n--- Terhijab ---\n`;
       blocked.forEach(r => {
-        text += `❌ ${r.label}: ${r.blockReason}\n`;
+        text += `(terhijab) ${r.label}: ${r.blockReason}\n`;
       });
     }
     if (res.sisaHarta > 0) {
@@ -170,8 +170,8 @@ export default function Index() {
       {/* Section 1: Input Harta */}
       <Card>
         <CardContent className="p-4 space-y-3">
-          <h2 className="text-sm font-semibold flex items-center gap-2">
-            💰 Harta Peninggalan
+          <h2 className="font-brand text-base font-semibold flex items-center gap-2 text-foreground">
+            <Wallet className="h-4 w-4 text-primary" /> Harta Peninggalan
           </h2>
           <div>
             <Label htmlFor="harta" className="text-xs">Total Harta (Rp) *</Label>
@@ -219,8 +219,8 @@ export default function Index() {
       {/* Section 2: Ahli Waris — chips + inline counter */}
       <Card className="mt-3">
         <CardContent className="p-4 space-y-3">
-          <h2 className="text-sm font-semibold flex items-center gap-2">
-            👥 Ahli Waris
+          <h2 className="font-brand text-base font-semibold flex items-center gap-2 text-foreground">
+            <Users className="h-4 w-4 text-primary" /> Ahli Waris
           </h2>
           {HEIR_CATEGORIES.map(cat => (
             <div key={cat.label}>
@@ -293,8 +293,8 @@ export default function Index() {
               <span className="text-muted-foreground">Ahli Waris</span>
               <span className="font-semibold">{selectedHeirs.size} dipilih</span>
             </div>
-            <Button className="w-full" disabled={!canCalculate} onClick={handleCalculate}>
-              📊 Hitung Waris
+            <Button className="w-full font-semibold" disabled={!canCalculate} onClick={handleCalculate}>
+              <Calculator className="h-4 w-4 mr-2" /> Hitung Pembagian
             </Button>
           </CardContent>
         </Card>
@@ -304,7 +304,9 @@ export default function Index() {
       {result && (
         <div ref={resultRef} className="mt-4 space-y-3">
           <Separator />
-          <h2 className="text-sm font-bold flex items-center gap-2">📋 Hasil Pembagian Waris</h2>
+          <h2 className="font-brand text-lg font-semibold flex items-center gap-2 text-foreground">
+            <BookOpen className="h-4 w-4 text-primary" /> Hasil Pembagian
+          </h2>
 
           {/* Info badges */}
           <div className="flex gap-2 flex-wrap">
@@ -312,10 +314,10 @@ export default function Index() {
               Harta Bersih: {formatCurrency(result.netHarta)}
             </Badge>
             {result.isAul && (
-              <Badge variant="destructive">⚠️ Aul</Badge>
+              <Badge variant="destructive" className="gap-1"><AlertTriangle className="h-3 w-3" /> Aul</Badge>
             )}
             {result.isRadd && (
-              <Badge className="bg-primary/10 text-primary border-primary/20">🔄 Radd</Badge>
+              <Badge className="bg-primary/10 text-primary border-primary/20 gap-1"><RefreshCw className="h-3 w-3" /> Radd</Badge>
             )}
           </div>
 
@@ -338,7 +340,7 @@ export default function Index() {
                   </p>
                 )}
                 <Separator className="my-2" />
-                <p className="text-xs text-muted-foreground italic">📖 {r.dalil}</p>
+                <p className="text-[11px] text-muted-foreground italic font-serif leading-relaxed">{r.dalil}</p>
               </CardContent>
             </Card>
           ))}
