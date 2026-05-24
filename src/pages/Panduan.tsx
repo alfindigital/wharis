@@ -99,10 +99,10 @@ export default function Panduan() {
       <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">
-            <AccordionTrigger className="text-sm font-semibold hover:no-underline">
+            <AccordionTrigger className="hover:no-underline py-3">
               <div className="text-left">
-                <h2 className="text-sm font-semibold">{g.title}</h2>
-                <p className="text-xs font-normal text-muted-foreground">{g.desc}</p>
+                <h2 className="font-brand text-base font-semibold text-foreground">{g.title}</h2>
+                <p className="text-xs font-normal text-muted-foreground mt-0.5">{g.desc}</p>
               </div>
             </AccordionTrigger>
             <AccordionContent>
