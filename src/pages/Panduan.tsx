@@ -122,11 +122,11 @@ export default function Panduan() {
 
       {/* Tips */}
       <div className="mt-4 space-y-2">
-        <h2 className="text-sm font-semibold flex items-center gap-2">💡 Tips Penting</h2>
+        <h2 className="font-brand text-base font-semibold">Tips Penting</h2>
         {tips.map((tip, i) => (
-          <div key={i} className="bg-primary/10 rounded-lg p-3">
+          <div key={i} className="bg-primary/5 border border-primary/15 rounded-lg p-3">
             <p className="text-sm">{tip.text}</p>
-            <p className="text-xs text-primary mt-1 italic">📖 {tip.dalil}</p>
+            <p className="text-[11px] text-primary mt-1 italic font-serif">{tip.dalil}</p>
           </div>
         ))}
       </div>
