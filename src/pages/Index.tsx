@@ -86,18 +86,18 @@ export default function Index() {
   };
 
   const buildResultText = (res: CalculationResult) => {
-    let text = `📋 HASIL PERHITUNGAN WARIS\n`;
-    text += `📅 ${new Date(res.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n`;
-    text += `💰 Harta Bersih: ${formatCurrency(res.netHarta)}\n`;
-    if (res.isAul) text += `⚠️ Aul (penyesuaian bagian)\n`;
-    if (res.isRadd) text += `🔄 Radd (pengembalian sisa)\n`;
+    let text = `HASIL PERHITUNGAN WARIS\n`;
+    text += `${new Date(res.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n`;
+    text += `Harta Bersih: ${formatCurrency(res.netHarta)}\n`;
+    if (res.isAul) text += `Aul (penyesuaian bagian)\n`;
+    if (res.isRadd) text += `Radd (pengembalian sisa)\n`;
     text += `\n--- Pembagian ---\n`;
     res.results.filter(r => !r.blocked).forEach(r => {
-      text += `\n👤 ${r.label} (${r.count} orang)\n`;
+      text += `\n${r.label} (${r.count} orang)\n`;
       text += `   Bagian: ${r.fraction} (${r.percentage.toFixed(1)}%)\n`;
       text += `   Total: ${formatCurrency(r.amount)}\n`;
       if (r.count > 1) text += `   Per orang: ${formatCurrency(r.amountPerPerson)}\n`;
-      text += `   📖 ${r.dalil}\n`;
+      text += `   Dalil: ${r.dalil}\n`;
     });
     const blocked = res.results.filter(r => r.blocked);
     if (blocked.length > 0) {
