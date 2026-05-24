@@ -170,8 +170,8 @@ export default function Index() {
       {/* Section 1: Input Harta */}
       <Card>
         <CardContent className="p-4 space-y-3">
-          <h2 className="text-sm font-semibold flex items-center gap-2">
-            💰 Harta Peninggalan
+          <h2 className="font-brand text-base font-semibold flex items-center gap-2 text-foreground">
+            <Wallet className="h-4 w-4 text-primary" /> Harta Peninggalan
           </h2>
           <div>
             <Label htmlFor="harta" className="text-xs">Total Harta (Rp) *</Label>
