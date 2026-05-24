@@ -293,8 +293,8 @@ export default function Index() {
               <span className="text-muted-foreground">Ahli Waris</span>
               <span className="font-semibold">{selectedHeirs.size} dipilih</span>
             </div>
-            <Button className="w-full" disabled={!canCalculate} onClick={handleCalculate}>
-              📊 Hitung Waris
+            <Button className="w-full font-semibold" disabled={!canCalculate} onClick={handleCalculate}>
+              <Calculator className="h-4 w-4 mr-2" /> Hitung Pembagian
             </Button>
           </CardContent>
         </Card>
