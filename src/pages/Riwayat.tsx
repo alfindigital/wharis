@@ -74,8 +74,8 @@ export default function Riwayat() {
                     <Badge variant="secondary">
                       Harta Bersih: {formatCurrency(item.netHarta)}
                     </Badge>
-                    {item.isAul && <Badge variant="destructive">⚠️ Aul</Badge>}
-                    {item.isRadd && <Badge className="bg-primary/10 text-primary border-primary/20">🔄 Radd</Badge>}
+                    {item.isAul && <Badge variant="destructive">Aul</Badge>}
+                    {item.isRadd && <Badge className="bg-primary/10 text-primary border-primary/20">Radd</Badge>}
                   </div>
 
                   {/* Heir details */}
