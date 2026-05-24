@@ -103,7 +103,7 @@ export default function Index() {
     if (blocked.length > 0) {
       text += `\n--- Terhijab ---\n`;
       blocked.forEach(r => {
-        text += `❌ ${r.label}: ${r.blockReason}\n`;
+        text += `(terhijab) ${r.label}: ${r.blockReason}\n`;
       });
     }
     if (res.sisaHarta > 0) {
