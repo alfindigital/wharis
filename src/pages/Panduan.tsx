@@ -111,7 +111,7 @@ export default function Panduan() {
                   <div key={i} className="bg-muted/50 rounded-lg p-3">
                     <p className="text-sm font-medium">{item.heir}</p>
                     <p className="text-xs text-muted-foreground">{item.share}</p>
-                    <p className="text-xs text-primary mt-1 italic">📖 {item.dalil}</p>
+                    <p className="text-[11px] text-primary mt-1 italic font-serif">{item.dalil}</p>
                   </div>
                 ))}
               </div>
