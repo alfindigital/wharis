@@ -111,7 +111,7 @@ export default function Panduan() {
                   <div key={i} className="bg-muted/50 rounded-lg p-3">
                     <p className="text-sm font-medium">{item.heir}</p>
                     <p className="text-xs text-muted-foreground">{item.share}</p>
-                    <p className="text-[11px] text-primary mt-1 italic font-serif">{item.dalil}</p>
+                    <p className="text-[11px] text-primary mt-1 italic">{item.dalil}</p>
                   </div>
                 ))}
               </div>
@@ -126,7 +126,7 @@ export default function Panduan() {
         {tips.map((tip, i) => (
           <div key={i} className="bg-primary/5 border border-primary/15 rounded-lg p-3">
             <p className="text-sm">{tip.text}</p>
-            <p className="text-[11px] text-primary mt-1 italic font-serif">{tip.dalil}</p>
+            <p className="text-[11px] text-primary mt-1 italic">{tip.dalil}</p>
           </div>
         ))}
       </div>

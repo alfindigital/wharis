@@ -93,7 +93,11 @@
     font-feature-settings: "ss01", "cv11";
   }
 
-  h1, h2, h3, .font-brand {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-brand font-semibold tracking-tight;
+    font-feature-settings: "ss01";
+  }
+  .font-brand {
     font-feature-settings: "ss01";
   }
 }

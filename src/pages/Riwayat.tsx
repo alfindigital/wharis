@@ -95,7 +95,7 @@ export default function Riwayat() {
                           Per orang: {formatCurrency(r.amountPerPerson)}
                         </p>
                       )}
-                      <p className="text-[11px] text-muted-foreground italic font-serif">{r.dalil}</p>
+                      <p className="text-[11px] text-muted-foreground italic">{r.dalil}</p>
                     </div>
                   ))}
 
