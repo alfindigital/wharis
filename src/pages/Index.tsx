@@ -32,6 +32,13 @@ export default function Index() {
   const [wasiat, setWasiat] = useState('');
   const [selectedHeirs, setSelectedHeirs] = useState<Map<HeirType, number>>(new Map());
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [showMore, setShowMore] = useState(false);
+
+  const PRIMARY_LABELS = ['Pasangan', 'Anak', 'Orang Tua'];
+  const primaryCats = HEIR_CATEGORIES.filter(c => PRIMARY_LABELS.includes(c.label));
+  const secondaryCats = HEIR_CATEGORIES.filter(c => !PRIMARY_LABELS.includes(c.label));
+  const hasSecondaryActive = secondaryCats.some(c => c.heirs.some(h => selectedHeirs.has(h)));
+  const totalPeople = Array.from(selectedHeirs.values()).reduce((a, b) => a + b, 0);
 
 
 
