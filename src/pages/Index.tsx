@@ -350,7 +350,7 @@ export default function Index() {
               Harta Bersih: {formatCurrency(result.netHarta)}
             </Badge>
             {result.isAul && (
-              <Badge variant="destructive" className="gap-1"><AlertTriangle className="h-3 w-3" /> Aul</Badge>
+              <Badge className="bg-primary/10 text-primary border-primary/20 gap-1"><AlertTriangle className="h-3 w-3" /> Aul</Badge>
             )}
             {result.isRadd && (
               <Badge className="bg-primary/10 text-primary border-primary/20 gap-1"><RefreshCw className="h-3 w-3" /> Radd</Badge>
