@@ -1,66 +1,60 @@
+## Tujuan
 
+Mengganti list chip + counter pada section "Ahli Waris" di `src/pages/Index.tsx` dengan **treemap blok proporsional** yang lebih visual, ringkas, dan interaktif — semua kategori terlihat sekaligus tanpa scroll panjang.
 
-# Rombak Flow: Gabung Beranda + Kalkulator Jadi Satu Halaman
-
-## Masalah Saat Ini
-- Beranda (`/`) hanya berisi welcome card, stats, dan tips — user harus klik lagi ke `/hitung`
-- Kalkulator pakai 4 step wizard — terlalu banyak klik
-- Flow tidak efisien: buka app → lihat welcome → klik "Mulai Hitung" → step 1 → step 2 → step 3 → step 4
-
-## Solusi: Single-Page Calculator dengan Inline Form
-
-Halaman utama (`/`) langsung menampilkan form kalkulator dalam satu scroll page, tanpa multi-step wizard.
-
-### Layout Baru Halaman Utama (`/`)
+## Konsep Visual
 
 ```text
-┌──────────────────────────┐
-│  🏠 WHARIS               │  ← Header tetap
-├──────────────────────────┤
-│  💰 Input Harta          │  ← Section 1: Total harta, hutang, wasiat
-│  [Total Harta  ]         │     (3 input fields, compact)
-│  [Hutang] [Wasiat]       │     Hutang & wasiat side-by-side
-├──────────────────────────┤
-│  👥 Ahli Waris           │  ← Section 2: Chip selector + inline counter
-│  [Suami] [Istri] [Anak♂] │     Toggle chip = aktif + muncul counter
-│  Anak Laki-laki  [- 2 +] │     Counter langsung muncul di bawah
-│  Istri           [- 1 +] │
-├──────────────────────────┤
-│  📊 Ringkasan            │  ← Sticky summary: harta bersih + jumlah ahli waris
-│  [====  HITUNG  ====]    │  ← Tombol CTA besar
-├──────────────────────────┤
-│  📋 HASIL PEMBAGIAN      │  ← Muncul di bawah setelah hitung
-│  (card per ahli waris)   │     Auto-scroll ke hasil
-│  [PDF] [JPG] [Salin]     │
-├──────────────────────────┤
-│  💡 Tips Hukum Waris     │  ← Daily tip di bawah
-│  📋 Perhitungan Terakhir │  ← Riwayat terakhir (jika ada)
-└──────────────────────────┘
-│ 🏠  📖  📋  ⚙️          │  ← Bottom nav: 4 menu (Hitung dihapus)
+┌─────────────────────────────────────────────┐
+│  Ahli Waris               3 dipilih · 5 org │
+├──────────────────┬──────────────────────────┤
+│                  │   ANAK                   │
+│   PASANGAN       │  ┌────────┬─────────┐   │
+│  ┌────────────┐  │  │ Anak L │ Anak P  │   │
+│  │   Istri    │  │  │  [2]   │   ·     │   │
+│  │   [1]      │  │  └────────┴─────────┘   │
+│  └────────────┘  │                          │
+│   · Suami        │   ORANG TUA              │
+│                  │  ┌────────┬─────────┐   │
+│                  │  │  Ayah  │  Ibu    │   │
+│                  │  │  [1]   │  [1]    │   │
+│                  │  └────────┴─────────┘   │
+├──────────────────┴──────────────────────────┤
+│  KAKEK/NENEK · SAUDARA · CUCU  (collapsed) │
+│  [+ Tampilkan lainnya]                      │
+└─────────────────────────────────────────────┘
 ```
 
-### Perubahan Bottom Nav
+- Setiap **kategori** = satu cell besar dengan label kecil di pojok.
+- Di dalamnya, setiap **jenis ahli waris** = blok kecil. Blok yang **aktif** terisi `bg-primary` + badge angka jumlah; yang non-aktif transparan dengan border tipis.
+- Ukuran blok aktif **membesar proporsional** terhadap jumlah orang (mis. flex-grow `1 + count*0.4`), sehingga "5 anak laki-laki" jelas terlihat lebih dominan daripada "1 istri" — inilah aspek treemap-nya.
+- Tap blok = toggle aktif. Saat aktif, muncul tombol **−** dan **+** kecil di dalam blok (tetap pakai stepper +/-) plus angka jumlah.
+- Kategori yang jarang dipakai (Kakek/Nenek, Saudara Sekandung/Seayah/Seibu, Cucu) dilipat di balik tombol **"Tampilkan lainnya"** untuk efisiensi vertikal. Otomatis ter-expand jika ada item yang sudah aktif di dalamnya.
+- Header section menampilkan ringkasan live: `N dipilih · M orang`.
 
-Dari 5 menu jadi 4 (karena Beranda = Kalkulator):
-1. **Beranda** (/) — Kalkulator + ringkasan
-2. **Panduan** (/panduan)
-3. **Riwayat** (/riwayat)
-4. **Setelan** (/pengaturan)
+## Interaksi
 
-### Detail Teknis
+- **Tap blok non-aktif** → aktifkan (count = 1), blok membesar dengan transisi.
+- **Tap blok aktif (di area label)** → tidak menutup; harus tekan ikon × kecil di pojok untuk menonaktifkan. Mencegah hilang tak sengaja saat mau menambah jumlah.
+- **Tombol +/-** di dalam blok aktif: ukuran kecil (h-6 w-6), disabled di batas.
+- Animasi: `transition-all duration-200` pada `flex-grow`, ukuran, dan warna.
 
-**File yang diubah:**
-1. **`src/pages/Index.tsx`** — Rombak total: gabungkan logic dari Hitung.tsx ke sini. Form kalkulator inline (bukan wizard), hasil muncul di bawah form setelah klik "Hitung". Pertahankan tips & riwayat terakhir di bagian bawah.
+## Detail Teknis
 
-2. **`src/pages/Hitung.tsx`** — Hapus atau redirect ke `/`
+File yang diubah: **hanya `src/pages/Index.tsx`** (section "Ahli Waris").
 
-3. **`src/components/BottomNav.tsx`** — Hapus menu "Hitung", sisakan 4 item
+- Hapus blok "Inline counters for selected heirs" di bagian bawah card — counter sekarang hidup di dalam blok masing-masing, jadi tidak perlu list terpisah.
+- Layout treemap pakai **CSS Flexbox** (bukan library). Tiap kategori = `flex flex-wrap gap-1`, tiap blok = `flex-grow` dinamis dengan `style={{ flexGrow: active ? 1 + count*0.4 : 0.6, flexBasis: '80px' }}` dan `min-height: 56px`.
+- Kategori dikelompokkan jadi dua tier:
+  - **Primer (selalu tampil)**: Pasangan, Anak, Orang Tua.
+  - **Sekunder (di balik toggle)**: sisanya. State lokal `showMore`, auto-true bila ada heir aktif di tier sekunder.
+- Tipografi: label kategori `text-[10px] uppercase tracking-wide text-muted-foreground`, label heir `text-xs font-medium`, badge jumlah `text-sm font-bold` di pojok kanan atas blok aktif.
+- Warna: aktif `bg-primary text-primary-foreground`, non-aktif `bg-card border border-border text-foreground hover:border-primary/50`. Semua via token semantik — tidak ada warna mentah.
+- Tombol kecil (+/− dan ×) pakai `<button>` dengan `e.stopPropagation()` agar tidak men-trigger toggle blok.
+- Aksesibilitas: `aria-pressed` pada blok, `aria-label` deskriptif (mis. "Anak Laki-laki, 2 orang, aktif"), tombol stepper tetap punya aria-label seperti sekarang.
 
-4. **`src/App.tsx`** — Hapus route `/hitung` atau redirect ke `/`
+## Yang TIDAK berubah
 
-**Behavior baru:**
-- Saat user klik "Hitung", hasil muncul di bawah form + auto-scroll ke hasil
-- Tombol "Hitung Ulang" reset form dan scroll ke atas
-- Chip ahli waris: klik toggle aktif → langsung tampilkan counter inline (gabung step 2 & 3)
-- Semua dalam satu scroll — tidak ada step/wizard
-
+- Logika `selectedHeirs` Map, fungsi `toggleHeir`, `updateHeirCount`, perhitungan, hasil, export — semua tetap.
+- Section Harta, Sticky CTA, Hasil Pembagian — tidak disentuh.
+- Konstanta `HEIR_CATEGORIES`, `HEIR_LABELS` di `src/lib/inheritance.ts` — tetap, hanya cara render-nya yang berubah.
