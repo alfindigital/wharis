@@ -376,7 +376,7 @@ export default function Index() {
                   </p>
                 )}
                 <Separator className="my-2" />
-                <p className="text-[11px] text-muted-foreground italic font-serif leading-relaxed">{r.dalil}</p>
+                <p className="text-[11px] text-muted-foreground italic leading-relaxed">{r.dalil}</p>
               </CardContent>
             </Card>
           ))}
