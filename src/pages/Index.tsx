@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Plus, Minus, RotateCcw, FileDown, Image, Copy, Wallet, Users, Calculator, BookOpen, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Plus, Minus, RotateCcw, FileDown, Image, Copy, Wallet, Users, Calculator, BookOpen, AlertTriangle, RefreshCw, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import PageShell from '@/components/PageShell';
 import SEO from '@/components/SEO';
@@ -32,6 +32,13 @@ export default function Index() {
   const [wasiat, setWasiat] = useState('');
   const [selectedHeirs, setSelectedHeirs] = useState<Map<HeirType, number>>(new Map());
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [showMore, setShowMore] = useState(false);
+
+  const PRIMARY_LABELS = ['Pasangan', 'Anak', 'Orang Tua'];
+  const primaryCats = HEIR_CATEGORIES.filter(c => PRIMARY_LABELS.includes(c.label));
+  const secondaryCats = HEIR_CATEGORIES.filter(c => !PRIMARY_LABELS.includes(c.label));
+  const hasSecondaryActive = secondaryCats.some(c => c.heirs.some(h => selectedHeirs.has(h)));
+  const totalPeople = Array.from(selectedHeirs.values()).reduce((a, b) => a + b, 0);
 
 
 
@@ -216,67 +223,96 @@ export default function Index() {
         </CardContent>
       </Card>
 
-      {/* Section 2: Ahli Waris — chips + inline counter */}
+      {/* Section 2: Ahli Waris — treemap proporsional */}
       <Card className="mt-3">
         <CardContent className="p-4 space-y-3">
-          <h2 className="font-brand text-base font-semibold flex items-center gap-2 text-foreground">
-            <Users className="h-4 w-4 text-primary" /> Ahli Waris
-          </h2>
-          {HEIR_CATEGORIES.map(cat => (
+          <div className="flex items-center justify-between">
+            <h2 className="font-brand text-base font-semibold flex items-center gap-2 text-foreground">
+              <Users className="h-4 w-4 text-primary" /> Ahli Waris
+            </h2>
+            {selectedHeirs.size > 0 && (
+              <span className="text-[11px] text-muted-foreground">
+                {selectedHeirs.size} jenis · {totalPeople} orang
+              </span>
+            )}
+          </div>
+
+          {[...primaryCats, ...(showMore || hasSecondaryActive ? secondaryCats : [])].map(cat => (
             <div key={cat.label}>
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5">{cat.label}</p>
               <div className="flex flex-wrap gap-1.5">
-                {cat.heirs.map(type => (
-                  <button
-                    key={type}
-                    onClick={() => toggleHeir(type)}
-                    className={cn(
-                      'px-3 py-1.5 rounded-full text-xs font-medium border transition-all',
-                      selectedHeirs.has(type)
-                        ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                        : 'bg-card text-foreground border-border hover:border-primary/50'
-                    )}
-                  >
-                    {HEIR_LABELS[type]}
-                  </button>
-                ))}
+                {cat.heirs.map(type => {
+                  const active = selectedHeirs.has(type);
+                  const count = selectedHeirs.get(type) || 0;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => !active && toggleHeir(type)}
+                      aria-pressed={active}
+                      aria-label={`${HEIR_LABELS[type]}${active ? `, ${count} orang, aktif` : ', non-aktif'}`}
+                      className={cn(
+                        'relative flex items-center justify-center rounded-lg text-xs font-medium border transition-all duration-200 px-3 py-2.5',
+                        active
+                          ? 'bg-primary text-primary-foreground border-primary shadow-sm cursor-default'
+                          : 'bg-card text-foreground border-border hover:border-primary/50 cursor-pointer'
+                      )}
+                      style={{
+                        flexGrow: active ? 1 + count * 0.4 : 0.6,
+                        flexBasis: active ? '120px' : '90px',
+                        minHeight: active ? 64 : 44,
+                      }}
+                    >
+                      {active ? (
+                        <div className="flex items-center gap-2 w-full">
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); updateHeirCount(type, -1); }}
+                            disabled={count <= 1}
+                            aria-label={`Kurangi jumlah ${HEIR_LABELS[type]}`}
+                            className="h-6 w-6 rounded-md bg-primary-foreground/15 hover:bg-primary-foreground/25 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center shrink-0"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <div className="flex-1 min-w-0 text-center">
+                            <p className="truncate text-[11px] leading-tight opacity-90">{HEIR_LABELS[type]}</p>
+                            <p className="font-bold text-base leading-tight">{count}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); updateHeirCount(type, 1); }}
+                            aria-label={`Tambah jumlah ${HEIR_LABELS[type]}`}
+                            className="h-6 w-6 rounded-md bg-primary-foreground/15 hover:bg-primary-foreground/25 flex items-center justify-center shrink-0"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); toggleHeir(type); }}
+                            aria-label={`Hapus ${HEIR_LABELS[type]}`}
+                            className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-background text-foreground border border-border shadow flex items-center justify-center hover:bg-destructive hover:text-destructive-foreground hover:border-destructive"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="truncate">{HEIR_LABELS[type]}</span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ))}
 
-          {/* Inline counters for selected heirs */}
-          {selectedHeirs.size > 0 && (
-            <div className="pt-2 space-y-2">
-              <Separator />
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">Jumlah</p>
-              {Array.from(selectedHeirs.entries()).map(([type, count]) => (
-                <div key={type} className="flex items-center justify-between">
-                  <span className="text-sm">{HEIR_LABELS[type]}</span>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateHeirCount(type, -1)}
-                      disabled={count <= 1}
-                      aria-label={`Kurangi jumlah ${HEIR_LABELS[type]}`}
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    <span className="w-6 text-center font-semibold text-sm" aria-label={`Jumlah ${HEIR_LABELS[type]}: ${count}`}>{count}</span>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => updateHeirCount(type, 1)}
-                      aria-label={`Tambah jumlah ${HEIR_LABELS[type]}`}
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {!hasSecondaryActive && (
+            <button
+              type="button"
+              onClick={() => setShowMore(v => !v)}
+              className="w-full text-xs text-muted-foreground hover:text-primary flex items-center justify-center gap-1 py-1.5 border-t border-border/60 mt-2"
+            >
+              {showMore ? <><ChevronUp className="h-3 w-3" /> Sembunyikan lainnya</> : <><ChevronDown className="h-3 w-3" /> Tampilkan lainnya (Kakek/Nenek, Saudara, Cucu)</>}
+            </button>
           )}
         </CardContent>
       </Card>
