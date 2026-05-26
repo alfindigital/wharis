@@ -54,7 +54,7 @@ export default function Pengaturan() {
   };
 
   return (
-    <PageShell title="WHARIS" subtitle="Pengaturan" headingSr="Pengaturan — WHARIS">
+    <PageShell title="WHARIS" headingSr="Pengaturan — WHARIS">
       <SEO
         title="Pengaturan — WHARIS"
         description="Atur mode gelap, install aplikasi WHARIS ke perangkat, dan kelola data riwayat perhitungan waris."

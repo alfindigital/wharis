@@ -28,7 +28,7 @@ export default function Riwayat() {
 
   if (history.length === 0) {
     return (
-      <PageShell title="WHARIS" subtitle="Riwayat Perhitungan" headingSr="Riwayat Perhitungan Waris — WHARIS">
+      <PageShell title="WHARIS" headingSr="Riwayat Perhitungan Waris — WHARIS">
         {seo}
         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
           <p className="text-sm">Belum ada riwayat perhitungan</p>
@@ -39,7 +39,7 @@ export default function Riwayat() {
   }
 
   return (
-    <PageShell title="WHARIS" subtitle={`${history.length} perhitungan tersimpan`} headingSr="Riwayat Perhitungan Waris — WHARIS">
+    <PageShell title="WHARIS" headingSr="Riwayat Perhitungan Waris — WHARIS">
       {seo}
       <h2 className="sr-only">Daftar Riwayat Perhitungan</h2>
       <div className="space-y-3">

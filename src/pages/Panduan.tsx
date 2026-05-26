@@ -89,7 +89,7 @@ const faqJsonLd = {
 
 export default function Panduan() {
   return (
-    <PageShell title="WHARIS" subtitle="Panduan Waris Islam" headingSr="Panduan Waris Islam — WHARIS">
+    <PageShell title="WHARIS" headingSr="Panduan Waris Islam — WHARIS">
       <SEO
         title="Panduan Waris Islam — Ashabul Furudh, Asabah & Hijab | WHARIS"
         description="Panduan lengkap pembagian waris menurut syariat Islam: ashabul furudh, asabah, hijab, aul & radd, serta dzawil arham beserta dalilnya."
