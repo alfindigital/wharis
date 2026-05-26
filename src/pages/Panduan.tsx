@@ -2,13 +2,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import PageShell from '@/components/PageShell';
 import SEO from '@/components/SEO';
 
-const tips = [
-  { text: 'Wasiat maksimal 1/3 dari harta peninggalan', dalil: 'HR. Bukhari no. 2742, Muslim no. 1628' },
-  { text: 'Hutang wajib dilunasi sebelum harta dibagikan kepada ahli waris', dalil: 'QS. An-Nisa: 11-12' },
-  { text: 'Anak laki-laki mendapat bagian 2x anak perempuan', dalil: 'QS. An-Nisa: 11' },
-  { text: 'Suami mendapat 1/2 jika tidak ada anak, 1/4 jika ada anak', dalil: 'QS. An-Nisa: 12' },
-  { text: 'Ibu mendapat 1/6 jika ada anak atau 2+ saudara', dalil: 'QS. An-Nisa: 11' },
-];
 
 const guides = [
   {
@@ -119,17 +112,6 @@ export default function Panduan() {
           </AccordionItem>
         ))}
       </Accordion>
-
-      {/* Tips */}
-      <div className="mt-4 space-y-2">
-        <h2 className="font-brand text-base font-semibold">Tips Penting</h2>
-        {tips.map((tip, i) => (
-          <div key={i} className="bg-primary/5 border border-primary/15 rounded-lg p-3">
-            <p className="text-sm">{tip.text}</p>
-            <p className="text-[11px] text-muted-foreground mt-1 italic">{tip.dalil}</p>
-          </div>
-        ))}
-      </div>
     </PageShell>
   );
 }
