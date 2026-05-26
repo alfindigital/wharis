@@ -166,7 +166,7 @@ export default function Index() {
   const canCalculate = (Number(totalHarta) > 0) && selectedHeirs.size > 0;
 
   return (
-    <PageShell title="WHARIS" subtitle="Kalkulator Waris Syariah" headingSr="WHARIS — Kalkulator Waris Islam sesuai Syariat">
+    <PageShell title="WHARIS" headingSr="WHARIS — Kalkulator Waris Islam sesuai Syariat">
       <SEO
         title="WHARIS — Kalkulator Waris Islam sesuai Syariat"
         description="Hitung pembagian waris (faraidh) otomatis sesuai Al-Quran & Hadits shahih. Masukkan harta, hutang, wasiat, dan ahli waris."
