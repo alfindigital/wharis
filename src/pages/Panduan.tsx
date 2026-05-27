@@ -109,7 +109,7 @@ export default function Panduan() {
         path="/panduan"
         jsonLd={faqJsonLd}
       />
-      <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
+      <Accordion type="single" collapsible defaultValue="dasar" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">
             <AccordionTrigger className="hover:no-underline py-3">
