@@ -5,6 +5,16 @@ import SEO from '@/components/SEO';
 
 const guides = [
   {
+    id: 'dasar',
+    title: 'Dasar Aturan Waris',
+    desc: 'Prinsip dan urutan pembagian harta peninggalan.',
+    content: [
+      { heir: 'Sumber Hukum', share: 'Al-Quran (QS. An-Nisa: 11, 12, 176), Hadits shahih, dan Ijma\' ulama', dalil: 'QS. An-Nisa: 11–12, 176' },
+      { heir: 'Urutan Pembagian', share: '1) Biaya pengurusan jenazah  2) Pelunasan hutang  3) Pelaksanaan wasiat (maks. 1/3)  4) Sisa baru dibagi ke ahli waris', dalil: 'QS. An-Nisa: 11 — "sesudah (dipenuhi) wasiat... dan sesudah dibayar hutangnya"' },
+      { heir: 'Kategori Ahli Waris', share: 'Ashabul Furudh (bagian tetap), Asabah (sisa), Dzawil Arham (kerabat jauh)', dalil: 'Ijma\' ulama berdasarkan QS. An-Nisa: 11–12' },
+    ],
+  },
+  {
     id: 'furudh',
     title: 'Ashabul Furudh',
     desc: 'Ahli waris yang bagiannya sudah ditentukan dalam Al-Quran.',
@@ -29,6 +39,16 @@ const guides = [
       { heir: 'Kakek', share: 'Sisa (menggantikan ayah)', dalil: 'Ijma\' ulama berdasarkan qiyas pada QS. An-Nisa: 11' },
       { heir: 'Saudara Laki Sekandung', share: 'Sisa harta', dalil: 'QS. An-Nisa: 176' },
       { heir: 'Anak Perempuan + Anak Laki', share: 'Asabah bil ghair (2:1)', dalil: 'QS. An-Nisa: 11' },
+    ],
+  },
+  {
+    id: 'wasiat-hutang',
+    title: 'Wasiat & Hutang',
+    desc: 'Kewajiban yang harus diselesaikan sebelum harta dibagi.',
+    content: [
+      { heir: 'Hutang', share: 'Wajib dilunasi lebih dulu dari seluruh harta peninggalan, tanpa batas jumlah', dalil: 'QS. An-Nisa: 11 — "sesudah dibayar hutangnya"' },
+      { heir: 'Wasiat', share: 'Maksimal 1/3 dari sisa setelah hutang. Tidak boleh untuk ahli waris yang sudah dapat bagian', dalil: 'HR. Al-Bukhari no. 2742, Muslim no. 1628 (Sa\'ad bin Abi Waqqash)' },
+      { heir: 'Catatan', share: 'Jika wasiat > 1/3 → kelebihan butuh persetujuan seluruh ahli waris. Wasiat untuk ahli waris → batal kecuali disetujui semua', dalil: 'HR. Ad-Daraquthni, dishahihkan Al-Albani' },
     ],
   },
   {
@@ -89,7 +109,7 @@ export default function Panduan() {
         path="/panduan"
         jsonLd={faqJsonLd}
       />
-      <Accordion type="single" collapsible defaultValue="furudh" className="space-y-2">
+      <Accordion type="single" collapsible defaultValue="dasar" className="space-y-2">
         {guides.map(g => (
           <AccordionItem key={g.id} value={g.id} className="border rounded-lg px-4">
             <AccordionTrigger className="hover:no-underline py-3">
