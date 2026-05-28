@@ -116,3 +116,14 @@
     @apply transition-all duration-150 ease-out active:scale-95;
   }
 }
+
+@layer base {
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition: background-color 300ms ease, border-color 300ms ease,
+      color 300ms ease, fill 300ms ease, stroke 300ms ease,
+      box-shadow 300ms ease !important;
+  }
+}
