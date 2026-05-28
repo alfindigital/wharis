@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const THEME_EVENT = 'theme-change';
 
@@ -9,6 +9,7 @@ function getInitial(): boolean {
 
 export function useTheme(): [boolean, (v: boolean | ((p: boolean) => boolean)) => void] {
   const [dark, setDarkState] = useState<boolean>(getInitial);
+  const mounted = useRef(false);
 
   useEffect(() => {
     const sync = () => setDarkState(getInitial());
@@ -21,11 +22,24 @@ export function useTheme(): [boolean, (v: boolean | ((p: boolean) => boolean)) =
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', dark);
+    const root = document.documentElement;
+    let timeoutId: number | undefined;
+    if (mounted.current) {
+      root.classList.add('theme-transition');
+      timeoutId = window.setTimeout(() => {
+        root.classList.remove('theme-transition');
+      }, 350);
+    } else {
+      mounted.current = true;
+    }
+    root.classList.toggle('dark', dark);
     const metaTheme = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
     if (metaTheme) {
       metaTheme.setAttribute('content', dark ? '#0c1211' : '#059669');
     }
+    return () => {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
   }, [dark]);
 
   const setDark = (v: boolean | ((p: boolean) => boolean)) => {
