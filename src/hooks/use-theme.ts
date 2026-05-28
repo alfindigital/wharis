@@ -22,6 +22,10 @@ export function useTheme(): [boolean, (v: boolean | ((p: boolean) => boolean)) =
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark);
+    const metaTheme = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
+    if (metaTheme) {
+      metaTheme.setAttribute('content', dark ? '#0c1211' : '#059669');
+    }
   }, [dark]);
 
   const setDark = (v: boolean | ((p: boolean) => boolean)) => {
