@@ -18,10 +18,13 @@
       // Default light mode; only dark when explicitly set
       (function () {
         try {
+          var metaTheme = document.querySelector('meta[name="theme-color"]');
           if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
+            if (metaTheme) metaTheme.setAttribute('content', '#0c1211');
           } else {
             document.documentElement.classList.remove('dark');
+            if (metaTheme) metaTheme.setAttribute('content', '#059669');
           }
         } catch (e) {}
       })();
