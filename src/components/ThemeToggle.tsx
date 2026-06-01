@@ -9,7 +9,7 @@ export default function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="h-8 w-8 shrink-0"
+      className="h-8 w-8 shrink-0 text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground"
       onClick={() => setDark(d => !d)}
       aria-label="Toggle theme"
     >
