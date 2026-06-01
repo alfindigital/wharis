@@ -15,7 +15,7 @@ export default function PageShell({ title, subtitle, headingSr, children }: Prop
     <div className="min-h-screen pb-20 bg-background">
       <header className="sticky top-0 z-40 border-b border-primary/30 bg-primary text-primary-foreground backdrop-blur-xl animate-fade-in shadow-sm">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
-          <BrandLogo className="size-8 shrink-0" />
+          <BrandLogo className="size-8 shrink-0 text-primary-foreground" />
           <div className="flex-1 min-w-0">
             <h1 className="brand-wordmark text-xl leading-none text-primary-foreground tracking-tight">
               <span aria-hidden="true">{title}</span>

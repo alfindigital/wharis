@@ -7,7 +7,7 @@ interface BrandLogoProps {
  * Garis tipis, geometris, mengikuti tone primary.
  */
 export default function BrandLogo({ className }: BrandLogoProps) {
-  const stroke = "hsl(var(--primary))";
+  const stroke = "currentColor";
   return (
     <svg
       viewBox="0 0 40 40"
