@@ -201,6 +201,51 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
       addShare('ayah', 0, 1, 'QS. An-Nisa: 11 — Ayah sebagai asabah mendapat sisa harta');
     }
   }
+
+  // ===== KAKEK (replaces ayah if ayah not present) =====
+  if (hasHeir(heirs, 'kakek')) {
+    if (hasHeir(heirs, 'ayah')) {
+      addShare('kakek', 0, 1, 'Terhijab oleh Ayah', true, 'Kakek terhijab oleh Ayah');
+    } else if (hasMaleFar(heirs)) {
+      addShare('kakek', 1, 6, 'Kakek mendapat 1/6 jika ada anak laki-laki (menggantikan posisi Ayah)');
+    } else {
+      addShare('kakek', 0, 1, 'Kakek sebagai asabah mendapat sisa harta (menggantikan Ayah)');
+    }
+  }
+
+  // ===== NENEK =====
+  if (hasHeir(heirs, 'nenek')) {
+    if (hasHeir(heirs, 'ibu')) {
+      addShare('nenek', 0, 1, 'Terhijab oleh Ibu', true, 'Nenek terhijab oleh Ibu');
+    } else {
+      addShare('nenek', 1, 6, 'HR. At-Tirmidzi no. 2101 (hasan shahih) — Nenek mendapat 1/6');
+    }
+  }
+
+  // ===== SAUDARA SEIBU =====
+  if (hasHeir(heirs, 'saudara_laki_seibu') || hasHeir(heirs, 'saudara_perempuan_seibu')) {
+    if (hasFar(heirs) || hasHeir(heirs, 'ayah') || hasHeir(heirs, 'kakek')) {
+      if (hasHeir(heirs, 'saudara_laki_seibu'))
+        addShare('saudara_laki_seibu', 0, 1, 'Terhijab', true, 'Terhijab oleh anak/ayah/kakek');
+      if (hasHeir(heirs, 'saudara_perempuan_seibu'))
+        addShare('saudara_perempuan_seibu', 0, 1, 'Terhijab', true, 'Terhijab oleh anak/ayah/kakek');
+    } else {
+      const totalSeibu = getCount(heirs, 'saudara_laki_seibu') + getCount(heirs, 'saudara_perempuan_seibu');
+      if (totalSeibu === 1) {
+        if (hasHeir(heirs, 'saudara_laki_seibu'))
+          addShare('saudara_laki_seibu', 1, 6, 'QS. An-Nisa: 12 — Saudara seibu tunggal mendapat 1/6');
+        else
+          addShare('saudara_perempuan_seibu', 1, 6, 'QS. An-Nisa: 12 — Saudara seibu tunggal mendapat 1/6');
+      } else {
+        if (hasHeir(heirs, 'saudara_laki_seibu'))
+          addShare('saudara_laki_seibu', 1, 3, 'QS. An-Nisa: 12 — Saudara seibu 2+ berbagi 1/3 rata');
+        if (hasHeir(heirs, 'saudara_perempuan_seibu'))
+          addShare('saudara_perempuan_seibu', 1, 3, 'QS. An-Nisa: 12 — Saudara seibu 2+ berbagi 1/3 rata');
+      }
+    }
+  }
+
+  // ===== SAUDARA SEKANDUNG =====
   // Hijab: hanya oleh anak laki/cucu laki/ayah (BUKAN oleh anak perempuan)
   if (hasHeir(heirs, 'saudara_laki_sekandung') || hasHeir(heirs, 'saudara_perempuan_sekandung')) {
     const sekandungBlocked = hasMaleFar(heirs) || hasHeir(heirs, 'ayah');
