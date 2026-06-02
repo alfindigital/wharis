@@ -201,7 +201,6 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
       addShare('ayah', 0, 1, 'QS. An-Nisa: 11 — Ayah sebagai asabah mendapat sisa harta');
     }
   }
-  // ===== SAUDARA SEKANDUNG =====
   // Hijab: hanya oleh anak laki/cucu laki/ayah (BUKAN oleh anak perempuan)
   if (hasHeir(heirs, 'saudara_laki_sekandung') || hasHeir(heirs, 'saudara_perempuan_sekandung')) {
     const sekandungBlocked = hasMaleFar(heirs) || hasHeir(heirs, 'ayah');
