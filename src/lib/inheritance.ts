@@ -163,12 +163,26 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
   }
 
   // ===== IBU =====
+  // Deteksi kasus Gharrawain/Umariyatain: pasangan + ibu + ayah tanpa anak/cucu & < 2 saudara
+  const totalSiblings = getCount(heirs, 'saudara_laki_sekandung') + getCount(heirs, 'saudara_perempuan_sekandung')
+    + getCount(heirs, 'saudara_laki_seayah') + getCount(heirs, 'saudara_perempuan_seayah')
+    + getCount(heirs, 'saudara_laki_seibu') + getCount(heirs, 'saudara_perempuan_seibu');
+  const hasMultipleSiblings = totalSiblings >= 2;
+  const isGharrawain = hasHeir(heirs, 'ibu') && hasHeir(heirs, 'ayah')
+    && (hasHeir(heirs, 'suami') || hasHeir(heirs, 'istri'))
+    && !hasFar(heirs) && !hasMultipleSiblings;
+
   if (hasHeir(heirs, 'ibu')) {
-    const hasMultipleSiblings = (getCount(heirs, 'saudara_laki_sekandung') + getCount(heirs, 'saudara_perempuan_sekandung')
-      + getCount(heirs, 'saudara_laki_seayah') + getCount(heirs, 'saudara_perempuan_seayah')
-      + getCount(heirs, 'saudara_laki_seibu') + getCount(heirs, 'saudara_perempuan_seibu')) >= 2;
-    
-    if (hasFar(heirs) || hasMultipleSiblings) {
+    if (isGharrawain) {
+      // Jumhur ulama: ibu mendapat 1/3 dari SISA setelah bagian pasangan
+      if (hasHeir(heirs, 'suami')) {
+        // Suami 1/2, sisa 1/2 → ibu 1/3 × 1/2 = 1/6
+        addShare('ibu', 1, 6, 'Kasus Gharrawain — Ibu 1/3 sisa setelah bagian suami = 1/6 harta (pendapat jumhur: Umar, Utsman, Ali, 4 madzhab)');
+      } else {
+        // Istri 1/4, sisa 3/4 → ibu 1/3 × 3/4 = 1/4
+        addShare('ibu', 1, 4, 'Kasus Gharrawain — Ibu 1/3 sisa setelah bagian istri = 1/4 harta (pendapat jumhur: Umar, Utsman, Ali, 4 madzhab)');
+      }
+    } else if (hasFar(heirs) || hasMultipleSiblings) {
       addShare('ibu', 1, 6, 'QS. An-Nisa: 11 — Ibu mendapat 1/6 jika ada anak/cucu atau 2+ saudara');
     } else {
       addShare('ibu', 1, 3, 'QS. An-Nisa: 11 — Ibu mendapat 1/3 jika tidak ada anak dan saudara < 2');
@@ -223,7 +237,6 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
         else
           addShare('saudara_perempuan_seibu', 1, 6, 'QS. An-Nisa: 12 — Saudara seibu tunggal mendapat 1/6');
       } else {
-        // Share 1/3 equally
         if (hasHeir(heirs, 'saudara_laki_seibu'))
           addShare('saudara_laki_seibu', 1, 3, 'QS. An-Nisa: 12 — Saudara seibu 2+ berbagi 1/3 rata');
         if (hasHeir(heirs, 'saudara_perempuan_seibu'))
@@ -233,20 +246,24 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
   }
 
   // ===== SAUDARA SEKANDUNG =====
+  // Hijab: hanya oleh anak laki/cucu laki/ayah (BUKAN oleh anak perempuan)
   if (hasHeir(heirs, 'saudara_laki_sekandung') || hasHeir(heirs, 'saudara_perempuan_sekandung')) {
-    if (hasFar(heirs) || hasHeir(heirs, 'ayah')) {
+    const sekandungBlocked = hasMaleFar(heirs) || hasHeir(heirs, 'ayah');
+    if (sekandungBlocked) {
       if (hasHeir(heirs, 'saudara_laki_sekandung'))
-        addShare('saudara_laki_sekandung', 0, 1, 'Terhijab', true, 'Terhijab oleh anak laki/ayah');
+        addShare('saudara_laki_sekandung', 0, 1, 'Terhijab', true, 'Terhijab oleh anak laki/cucu laki/ayah');
       if (hasHeir(heirs, 'saudara_perempuan_sekandung'))
-        addShare('saudara_perempuan_sekandung', 0, 1, 'Terhijab', true, 'Terhijab oleh anak laki/ayah');
+        addShare('saudara_perempuan_sekandung', 0, 1, 'Terhijab', true, 'Terhijab oleh anak laki/cucu laki/ayah');
     } else if (hasHeir(heirs, 'saudara_laki_sekandung')) {
-      // Asabah
+      // Asabah binafsih; saudara pr jadi asabah bil ghair (2:1)
       addShare('saudara_laki_sekandung', 0, 1, 'Saudara laki sekandung sebagai asabah mendapat sisa');
       if (hasHeir(heirs, 'saudara_perempuan_sekandung')) {
         addShare('saudara_perempuan_sekandung', 0, 1, 'Saudara perempuan sekandung menjadi asabah bersama saudara laki (2:1)');
       }
+    } else if (hasFar(heirs)) {
+      // Hanya saudara pr sekandung + ada anak/cucu pr → asabah ma'al ghair (sisa)
+      addShare('saudara_perempuan_sekandung', 0, 1, "Saudara perempuan sekandung menjadi 'asabah ma'al ghair (mendapat sisa) karena ada anak/cucu perempuan");
     } else {
-      // Only sisters
       const count = getCount(heirs, 'saudara_perempuan_sekandung');
       if (count === 1) {
         addShare('saudara_perempuan_sekandung', 1, 2, 'QS. An-Nisa: 176 — Saudara perempuan sekandung tunggal mendapat 1/2');
@@ -258,19 +275,38 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
 
   // ===== SAUDARA SEAYAH =====
   if (hasHeir(heirs, 'saudara_laki_seayah') || hasHeir(heirs, 'saudara_perempuan_seayah')) {
-    if (hasFar(heirs) || hasHeir(heirs, 'ayah') || hasHeir(heirs, 'saudara_laki_sekandung')) {
+    // Hijab dasar: anak laki/cucu laki/ayah/saudara laki sekandung
+    const seayahBlocked = hasMaleFar(heirs) || hasHeir(heirs, 'ayah') || hasHeir(heirs, 'saudara_laki_sekandung');
+    // Tambahan: bila saudara pr sekandung menjadi 'asabah ma'al ghair (ada anak/cucu pr), saudara seayah ikut terhijab
+    const asabahMaalGhairAktif = !seayahBlocked && hasFar(heirs) && hasHeir(heirs, 'saudara_perempuan_sekandung');
+    const akhwatSekandung = getCount(heirs, 'saudara_perempuan_sekandung');
+
+    if (seayahBlocked || asabahMaalGhairAktif) {
+      const reason = asabahMaalGhairAktif
+        ? "Terhijab oleh saudara perempuan sekandung yang menjadi 'asabah ma'al ghair"
+        : 'Terhijab oleh anak laki/cucu laki/ayah/saudara laki sekandung';
       if (hasHeir(heirs, 'saudara_laki_seayah'))
-        addShare('saudara_laki_seayah', 0, 1, 'Terhijab', true, 'Terhijab oleh anak/ayah/saudara laki sekandung');
+        addShare('saudara_laki_seayah', 0, 1, 'Terhijab', true, reason);
       if (hasHeir(heirs, 'saudara_perempuan_seayah'))
-        addShare('saudara_perempuan_seayah', 0, 1, 'Terhijab', true, 'Terhijab oleh anak/ayah/saudara laki sekandung');
+        addShare('saudara_perempuan_seayah', 0, 1, 'Terhijab', true, reason);
     } else if (hasHeir(heirs, 'saudara_laki_seayah')) {
+      // Asabah binafsih; saudara pr seayah jadi asabah bil ghair walau ada saudara pr sekandung
       addShare('saudara_laki_seayah', 0, 1, 'Saudara laki seayah sebagai asabah mendapat sisa');
       if (hasHeir(heirs, 'saudara_perempuan_seayah')) {
         addShare('saudara_perempuan_seayah', 0, 1, 'Saudara perempuan seayah menjadi asabah bersama saudara laki seayah (2:1)');
       }
+    } else if (hasFar(heirs)) {
+      // Hanya saudara pr seayah + ada anak/cucu pr (tanpa saudara pr sekandung) → asabah ma'al ghair
+      addShare('saudara_perempuan_seayah', 0, 1, "Saudara perempuan seayah menjadi 'asabah ma'al ghair (mendapat sisa) karena ada anak/cucu perempuan");
     } else {
+      // Furudh — pertimbangkan interaksi dengan saudara pr sekandung
       const count = getCount(heirs, 'saudara_perempuan_seayah');
-      if (count === 1) {
+      if (akhwatSekandung >= 2) {
+        addShare('saudara_perempuan_seayah', 0, 1, 'Terhijab', true, 'Terhijab oleh 2+ saudara perempuan sekandung (tanpa muassib saudara laki seayah)');
+      } else if (akhwatSekandung === 1) {
+        // Takmilatu ats-tsulutsain — pelengkap menuju 2/3
+        addShare('saudara_perempuan_seayah', 1, 6, 'Saudara perempuan seayah mendapat 1/6 sebagai pelengkap 2/3 (takmilatu ats-tsulutsain)');
+      } else if (count === 1) {
         addShare('saudara_perempuan_seayah', 1, 2, 'Saudara perempuan seayah tunggal mendapat 1/2');
       } else {
         addShare('saudara_perempuan_seayah', 2, 3, 'Saudara perempuan seayah 2+ mendapat 2/3');

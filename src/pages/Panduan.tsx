@@ -58,9 +58,22 @@ const guides = [
     content: [
       { heir: 'Kakek', share: 'Terhijab oleh Ayah', dalil: 'Ijma\' ulama' },
       { heir: 'Nenek', share: 'Terhijab oleh Ibu', dalil: 'Ijma\' ulama' },
-      { heir: 'Saudara Seibu', share: 'Terhijab oleh anak/ayah/kakek', dalil: 'QS. An-Nisa: 12' },
-      { heir: 'Saudara Seayah', share: 'Terhijab oleh saudara laki sekandung', dalil: 'Ijma\' ulama' },
+      { heir: 'Saudara Seibu', share: 'Terhijab oleh anak/cucu (laki/pr), ayah, atau kakek', dalil: 'QS. An-Nisa: 12' },
+      { heir: 'Saudara Sekandung (laki & pr)', share: 'Terhijab oleh ayah, anak laki, atau cucu laki. TIDAK terhijab oleh anak/cucu perempuan', dalil: 'Ijma\' — QS. An-Nisa: 176' },
+      { heir: 'Saudara Seayah', share: 'Terhijab oleh saudara laki sekandung; saudara pr seayah juga terhijab oleh 2+ saudara pr sekandung', dalil: 'Ijma\' ulama' },
       { heir: 'Cucu dari Anak Laki', share: 'Terhijab oleh anak laki-laki', dalil: 'HR. Al-Bukhari no. 6732' },
+    ],
+  },
+  {
+    id: 'kasus-khusus',
+    title: 'Kasus Khusus & Pendapat Madzhab',
+    desc: 'Pendapat fiqih yang dipakai aplikasi ini untuk kasus-kasus tertentu.',
+    content: [
+      { heir: "Gharrawain / Umariyatain", share: 'Bila ahli waris = pasangan + ibu + ayah (tanpa anak/cucu & < 2 saudara), ibu mendapat 1/3 dari SISA setelah bagian pasangan (bukan 1/3 harta penuh). Contoh: suami 1/2 + ibu 1/6 + ayah sisa.', dalil: 'Pendapat jumhur: Umar, Utsman, Ali, Ibnu Mas\'ud, dan 4 madzhab (Hanafi, Maliki, Syafi\'i, Hambali)' },
+      { heir: "'Asabah Ma'al Ghair", share: 'Saudara perempuan sekandung/seayah menjadi asabah (mendapat sisa) jika ada anak/cucu perempuan tanpa anak laki.', dalil: 'HR. Al-Bukhari no. 6736 — fatwa Ibnu Mas\'ud yang sesuai keputusan Nabi ﷺ' },
+      { heir: 'Takmilatu Ats-Tsulutsain', share: 'Saudara pr seayah mendapat 1/6 sebagai pelengkap menuju 2/3 bila ada 1 saudara pr sekandung yang sudah ambil 1/2.', dalil: 'Ijma\' ulama' },
+      { heir: 'Kakek vs Saudara', share: 'Aplikasi ini mengikuti pendapat Abu Hanifah: kakek menghijab seluruh saudara (sekandung/seayah/seibu) seperti ayah. Pendapat jumhur (Maliki/Syafi\'i/Hambali): saudara sekandung & seayah ber-muqasamah dengan kakek.', dalil: 'Pendapat Abu Hanifah berdasarkan qiyas pada ayah (QS. An-Nisa: 11)' },
+      { heir: 'Cucu Pr saat ada Anak Pr', share: 'Cucu perempuan dari anak laki mendapat 1/6 sebagai pelengkap 2/3 bila ada 1 anak pr; terhijab bila ada 2+ anak pr (kecuali ada cucu laki yang menjadi muassib).', dalil: 'HR. Al-Bukhari no. 6736 (fatwa Ibnu Mas\'ud)' },
     ],
   },
   {
