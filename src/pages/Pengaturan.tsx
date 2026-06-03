@@ -6,6 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Download, Trash2, Info, Moon, Mail } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import SEO from '@/components/SEO';
+import CacheStatusCard from '@/components/CacheStatusCard';
 import { Label } from '@/components/ui/label';
 import { clearHistory, getHistory } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
