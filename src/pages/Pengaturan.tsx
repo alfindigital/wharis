@@ -109,6 +109,11 @@ export default function Pengaturan() {
         </Card>
         </section>
 
+        <section aria-labelledby="setting-cache">
+          <h2 id="setting-cache" className="sr-only">Cache & Service Worker</h2>
+          <CacheStatusCard />
+        </section>
+
         <Separator />
 
         {/* About */}
