@@ -230,3 +230,37 @@ function StatusRow({
     </div>
   );
 }
+
+function InfoLine({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <p className="text-muted-foreground text-[10px] uppercase tracking-wide">{label}</p>
+      <p className={mono ? "font-mono text-[10px] text-muted-foreground break-all" : "text-foreground break-words"}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function NameList({ names, empty = "Tidak ada." }: { names: string[]; empty?: string }) {
+  if (names.length === 0) {
+    return <p className="text-muted-foreground">{empty}</p>;
+  }
+
+  return (
+    <ul className="space-y-0.5">
+      {names.map((name) => (
+        <li key={name} className="font-mono text-[10px] text-muted-foreground break-all">
+          {name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function formatDate(value: string) {
+  return new Date(value).toLocaleString("id-ID", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+  });
+}
