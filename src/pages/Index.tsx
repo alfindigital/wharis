@@ -205,7 +205,20 @@ export default function Index() {
               />
             </div>
             <div>
-              <Label htmlFor="wasiat" className="text-xs">Wasiat (Rp)</Label>
+              <div className="flex items-center gap-1">
+                <Label htmlFor="wasiat" className="text-xs">Wasiat (Rp)</Label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-[260px] text-xs">
+                    <p className="font-semibold mb-1">Wasiat vs Hibah</p>
+                    <p className="mb-1"><strong>Wasiat</strong>: Pemberian yang berlaku setelah pewaris wafat, diambil dari harta peninggalan (maks. 1/3).</p>
+                    <p><strong>Hibah</strong>: Pemberian saat masih hidup, sudah berpindah kepemilikan.</p>
+                    <p className="mt-1 text-muted-foreground">Wasiat untuk ahli waris batal kecuali disetujui semua (HR. Abu Dawud).</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
               <Input
                 id="wasiat"
                 type="number"
