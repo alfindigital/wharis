@@ -11,8 +11,26 @@
     <link rel="canonical" href="https://wharis.lovable.app/" />
     <link rel="icon" href="/icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
-    <link rel="manifest" href="/manifest.json?v=2" />
     <meta name="theme-color" content="#059669" />
+    <script>
+      (function () {
+        var host = window.location.hostname;
+        var isPreview =
+          host.indexOf('id-preview--') !== -1 ||
+          host.indexOf('preview--') !== -1 ||
+          host === 'lovableproject.com' ||
+          host.slice(-19) === '.lovableproject.com' ||
+          host === 'lovableproject-dev.com' ||
+          host.slice(-23) === '.lovableproject-dev.com';
+
+        if (!isPreview) {
+          var manifest = document.createElement('link');
+          manifest.rel = 'manifest';
+          manifest.href = '/manifest.json?v=3';
+          document.head.appendChild(manifest);
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />

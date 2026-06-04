@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { RefreshCw, Activity, CheckCircle2, XCircle } from "lucide-react";
+import { RefreshCw, Activity, CheckCircle2, XCircle, Clock, ArchiveX } from "lucide-react";
 import {
   getCacheStatus,
   forceClearCacheAndReload,
@@ -64,10 +64,49 @@ export default function CacheStatusCard() {
             </div>
 
             <div className="rounded-md border bg-muted/30 p-2 space-y-1">
-              <p className="font-medium text-foreground">Build</p>
+              <p className="font-medium text-foreground">Build ID terdeteksi</p>
               <p className="font-mono text-[10px] text-muted-foreground break-all">
                 {status.buildId}
               </p>
+            </div>
+
+            <div className="rounded-md border bg-muted/30 p-2 space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-medium text-foreground">Log pembersihan terakhir</p>
+                <Badge variant={status.lastClearEvent ? "default" : "secondary"} className="gap-1 text-[10px]">
+                  <Clock className="h-3 w-3" />
+                  {status.lastClearEvent ? "Tercatat" : "Belum ada"}
+                </Badge>
+              </div>
+              {status.lastClearEvent ? (
+                <div className="space-y-1.5">
+                  <InfoLine label="Waktu" value={formatDate(status.lastClearEvent.clearedAt)} />
+                  <InfoLine label="Alasan" value={status.lastClearEvent.reason} />
+                  <InfoLine label="Build saat clear" value={status.lastClearEvent.buildId} mono />
+                  {status.lastClearEvent.previousBuildId && (
+                    <InfoLine label="Build sebelumnya" value={status.lastClearEvent.previousBuildId} mono />
+                  )}
+                  <div>
+                    <p className="text-muted-foreground text-[10px] uppercase tracking-wide">
+                      Cache yang dihapus ({status.lastClearEvent.deletedCacheNames.length})
+                    </p>
+                    <NameList
+                      names={status.lastClearEvent.deletedCacheNames}
+                      empty="Tidak ada cache tersimpan saat pembersihan."
+                    />
+                  </div>
+                  {status.lastClearEvent.failedCacheNames.length > 0 && (
+                    <div>
+                      <p className="text-muted-foreground text-[10px] uppercase tracking-wide">
+                        Cache gagal dihapus ({status.lastClearEvent.failedCacheNames.length})
+                      </p>
+                      <NameList names={status.lastClearEvent.failedCacheNames} />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-muted-foreground">Belum ada riwayat pembersihan cache di perangkat ini.</p>
+              )}
             </div>
 
             <div className="rounded-md border bg-muted/30 p-2 space-y-1">
@@ -108,12 +147,30 @@ export default function CacheStatusCard() {
               )}
             </div>
 
-            {status.lastClearedAt && (
-              <p className="text-[10px] text-muted-foreground">
-                Terakhir dibersihkan:{" "}
-                {new Date(status.lastClearedAt).toLocaleString("id-ID")}
+            <div className="rounded-md border bg-muted/30 p-2 space-y-2">
+              <p className="font-medium text-foreground">
+                Riwayat clear cache ({status.clearHistory.length})
               </p>
-            )}
+              {status.clearHistory.length === 0 ? (
+                <p className="text-muted-foreground">Belum ada riwayat.</p>
+              ) : (
+                <div className="space-y-2">
+                  {status.clearHistory.slice(0, 5).map((event) => (
+                    <div key={event.id} className="border-t pt-2 first:border-t-0 first:pt-0">
+                      <p className="text-foreground">{formatDate(event.clearedAt)}</p>
+                      <p className="text-muted-foreground">{event.reason}</p>
+                      <p className="font-mono text-[10px] text-muted-foreground break-all">
+                        Build: {event.buildId}
+                      </p>
+                      <div className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground">
+                        <ArchiveX className="h-3 w-3" />
+                        {event.deletedCacheNames.length} cache dihapus
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </>
         )}
 
@@ -172,4 +229,38 @@ function StatusRow({
       </Badge>
     </div>
   );
+}
+
+function InfoLine({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <p className="text-muted-foreground text-[10px] uppercase tracking-wide">{label}</p>
+      <p className={mono ? "font-mono text-[10px] text-muted-foreground break-all" : "text-foreground break-words"}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function NameList({ names, empty = "Tidak ada." }: { names: string[]; empty?: string }) {
+  if (names.length === 0) {
+    return <p className="text-muted-foreground">{empty}</p>;
+  }
+
+  return (
+    <ul className="space-y-0.5">
+      {names.map((name) => (
+        <li key={name} className="font-mono text-[10px] text-muted-foreground break-all">
+          {name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function formatDate(value: string) {
+  return new Date(value).toLocaleString("id-ID", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+  });
 }

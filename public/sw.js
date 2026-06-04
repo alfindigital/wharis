@@ -1,29 +1,30 @@
-self.addEventListener("install", (event) => {
-  event.waitUntil(self.skipWaiting());
-});
+function isAppCacheForThisRegistration(name) {
+  const hasKnownAppBucket = /(^|-)precache-v\d+-|(^|-)runtime-|(^|-)googleAnalytics-|^wharis-/.test(name);
+  return hasKnownAppBucket && (name.endsWith(self.registration.scope) || name.startsWith("wharis-"));
+}
 
-self.addEventListener("activate", (event) => {
+self.addEventListener("install", () => self.skipWaiting());
+
+self.addEventListener("activate", (event) =>
   event.waitUntil(
     (async () => {
-      await self.clients.claim();
+      try {
+        const cacheNames = await caches.keys();
+        const appCacheNames = cacheNames.filter(isAppCacheForThisRegistration);
+        await Promise.allSettled(appCacheNames.map((name) => caches.delete(name)));
+        await self.clients.claim();
 
-      const cacheNames = await caches.keys();
-      await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
-
-      const clients = await self.clients.matchAll({
-        type: "window",
-        includeUncontrolled: true,
-      });
-
-      await Promise.all(
-        clients.map((client) => {
-          const url = new URL(client.url);
-          url.searchParams.set("sw-cleanup", Date.now().toString());
-          return client.navigate(url.toString());
-        })
-      );
-
-      await self.registration.unregister();
-    })()
-  );
-});
+        const windowClients = await self.clients.matchAll({ type: "window" });
+        await Promise.allSettled(
+          windowClients.map((client) => {
+            const url = new URL(client.url);
+            url.searchParams.set("sw-cleanup", Date.now().toString());
+            return client.navigate(url.toString());
+          }),
+        );
+      } finally {
+        await self.registration.unregister();
+      }
+    })(),
+  ),
+);

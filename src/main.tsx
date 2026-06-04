@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import App from './App.tsx';
 import './index.css';
-import { APP_BUILD_ID } from './lib/cache-utils';
+import { APP_BUILD_ID, clearBrowserCaches } from './lib/cache-utils';
 
 const PREVIEW_CACHE_REFRESH_KEY = "wharis-preview-cache-cleared-v1";
 const BUILD_ID_KEY = "wharis-build-id";
@@ -28,21 +28,8 @@ const isPreviewHost =
   window.location.hostname.includes("id-preview--") ||
   window.location.hostname.includes("lovableproject.com");
 
-const clearAllCaches = async () => {
-  const wasControlledByServiceWorker = Boolean(navigator.serviceWorker?.controller);
-
-  if ("serviceWorker" in navigator) {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    await Promise.all(registrations.map((registration) => registration.unregister()));
-  }
-
-  if ("caches" in window) {
-    const cacheNames = await caches.keys();
-    await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
-  }
-
-  return wasControlledByServiceWorker;
-};
+const clearAllCaches = (reason: string, previousBuildId: string | null = null) =>
+  clearBrowserCaches({ reason, previousBuildId });
 
 // Auto-clear when build ID changes (works on preview AND production)
 const checkBuildIdAndMaybeReload = async (): Promise<boolean> => {
@@ -52,11 +39,12 @@ const checkBuildIdAndMaybeReload = async (): Promise<boolean> => {
       const alreadyReloaded = sessionStorage.getItem(BUILD_RELOAD_KEY) === APP_BUILD_ID;
       if (!alreadyReloaded) {
         console.info(`[wharis] Build changed: ${stored} → ${APP_BUILD_ID}. Clearing cache.`);
-        await clearAllCaches();
+        await clearAllCaches(`Build berubah: ${stored} → ${APP_BUILD_ID}`, stored);
         localStorage.setItem(BUILD_ID_KEY, APP_BUILD_ID);
         sessionStorage.setItem(BUILD_RELOAD_KEY, APP_BUILD_ID);
         const url = new URL(window.location.href);
-        url.searchParams.set("v", Date.now().toString());
+        url.searchParams.set("v", APP_BUILD_ID);
+        url.searchParams.set("refresh", Date.now().toString());
         window.location.replace(url.toString());
         return true; // reloading
       }
@@ -75,11 +63,19 @@ const bootstrap = async () => {
 
   // 2) Preview/iframe: always strip any leftover SW/cache
   if (isPreviewHost || isInIframe) {
-    const wasControlled = await clearAllCaches();
+    const clearEvent = await clearAllCaches("Preview dibuka: validasi versi terbaru", APP_BUILD_ID);
     const alreadyReloaded = sessionStorage.getItem(PREVIEW_CACHE_REFRESH_KEY) === "1";
-    if (wasControlled && !alreadyReloaded) {
+    const hadStaleBrowserState =
+      clearEvent.controllerWasActive ||
+      clearEvent.registrationsUnregistered.length > 0 ||
+      clearEvent.deletedCacheNames.length > 0;
+
+    if (hadStaleBrowserState && !alreadyReloaded) {
       sessionStorage.setItem(PREVIEW_CACHE_REFRESH_KEY, "1");
-      window.location.reload();
+      const url = new URL(window.location.href);
+      url.searchParams.set("v", APP_BUILD_ID);
+      url.searchParams.set("refresh", Date.now().toString());
+      window.location.replace(url.toString());
       return;
     }
     sessionStorage.removeItem(PREVIEW_CACHE_REFRESH_KEY);
