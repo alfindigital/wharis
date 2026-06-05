@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import BrandLogo from './BrandLogo';
 import ThemeToggle from './ThemeToggle';
+import { APP_BUILD_ID } from '@/lib/cache-utils';
 
 interface Props {
   title: string;
@@ -11,6 +12,7 @@ interface Props {
 
 export default function PageShell({ title, subtitle, headingSr, children }: Props) {
   const accessibleHeading = headingSr || (subtitle ? `${title} — ${subtitle}` : title);
+  const buildShort = APP_BUILD_ID.slice(0, 16);
   return (
     <div className="min-h-screen pb-20 bg-background">
       <header className="sticky top-0 z-40 border-b border-primary/30 bg-primary text-primary-foreground backdrop-blur-xl animate-fade-in shadow-sm">
@@ -27,6 +29,9 @@ export default function PageShell({ title, subtitle, headingSr, children }: Prop
               </p>
             )}
           </div>
+          <span className="hidden sm:inline text-[10px] font-mono text-primary-foreground/60 bg-primary-foreground/10 px-1.5 py-0.5 rounded" title={`Build: ${APP_BUILD_ID}`}>
+            {buildShort}
+          </span>
           <ThemeToggle />
         </div>
       </header>
