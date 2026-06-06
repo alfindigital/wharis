@@ -34,6 +34,8 @@ export default function Index() {
   const [selectedHeirs, setSelectedHeirs] = useState<Map<HeirType, number>>(new Map());
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [showMore, setShowMore] = useState(false);
+  const [exportingPdf, setExportingPdf] = useState(false);
+  const [exportingJpg, setExportingJpg] = useState(false);
 
   const PRIMARY_LABELS = ['Pasangan', 'Anak', 'Orang Tua'];
   const primaryCats = HEIR_CATEGORIES.filter(c => PRIMARY_LABELS.includes(c.label));
@@ -132,10 +134,11 @@ export default function Index() {
   };
 
   const handleSaveImage = async () => {
-    if (!resultRef.current) return;
+    if (!resultRef.current || exportingJpg) return;
+    setExportingJpg(true);
     try {
       const html2canvas = (await import('html2canvas')).default;
-      const canvas = await html2canvas(resultRef.current, { backgroundColor: null, scale: 2 });
+      const canvas = await html2canvas(resultRef.current, { backgroundColor: '#ffffff', scale: 2 });
       const link = document.createElement('a');
       link.download = `waris-${Date.now()}.jpg`;
       link.href = canvas.toDataURL('image/jpeg', 0.9);
@@ -143,11 +146,14 @@ export default function Index() {
       toast({ title: 'Berhasil', description: 'Gambar tersimpan.' });
     } catch {
       toast({ title: 'Gagal', description: 'Tidak dapat menyimpan gambar.', variant: 'destructive' });
+    } finally {
+      setExportingJpg(false);
     }
   };
 
   const handleExportPDF = async () => {
-    if (!resultRef.current) return;
+    if (!resultRef.current || exportingPdf) return;
+    setExportingPdf(true);
     try {
       const html2canvas = (await import('html2canvas')).default;
       const { jsPDF } = await import('jspdf');
@@ -161,6 +167,8 @@ export default function Index() {
       toast({ title: 'Berhasil', description: 'PDF tersimpan.' });
     } catch {
       toast({ title: 'Gagal', description: 'Tidak dapat membuat PDF.', variant: 'destructive' });
+    } finally {
+      setExportingPdf(false);
     }
   };
 
@@ -186,9 +194,11 @@ export default function Index() {
             <Input
               id="harta"
               type="number"
+              inputMode="numeric"
+              min={0}
               placeholder="0"
               value={totalHarta}
-              onChange={e => setTotalHarta(e.target.value)}
+              onChange={e => setTotalHarta(e.target.value.replace(/^-/, ''))}
               className="mt-1"
             />
           </div>
@@ -198,9 +208,11 @@ export default function Index() {
               <Input
                 id="hutang"
                 type="number"
+                inputMode="numeric"
+                min={0}
                 placeholder="0"
                 value={hutang}
-                onChange={e => setHutang(e.target.value)}
+                onChange={e => setHutang(e.target.value.replace(/^-/, ''))}
                 className="mt-1"
               />
             </div>
@@ -222,9 +234,11 @@ export default function Index() {
               <Input
                 id="wasiat"
                 type="number"
+                inputMode="numeric"
+                min={0}
                 placeholder="0"
                 value={wasiat}
-                onChange={e => setWasiat(e.target.value)}
+                onChange={e => setWasiat(e.target.value.replace(/^-/, ''))}
                 className="mt-1"
               />
             </div>
@@ -421,11 +435,11 @@ export default function Index() {
 
           {/* Export buttons */}
           <div className="grid grid-cols-3 gap-2">
-            <Button variant="outline" size="sm" onClick={handleExportPDF}>
-              <FileDown className="h-4 w-4 mr-1" /> PDF
+            <Button variant="outline" size="sm" onClick={handleExportPDF} disabled={exportingPdf}>
+              <FileDown className="h-4 w-4 mr-1" /> {exportingPdf ? '…' : 'PDF'}
             </Button>
-            <Button variant="outline" size="sm" onClick={handleSaveImage}>
-              <Image className="h-4 w-4 mr-1" /> JPG
+            <Button variant="outline" size="sm" onClick={handleSaveImage} disabled={exportingJpg}>
+              <Image className="h-4 w-4 mr-1" /> {exportingJpg ? '…' : 'JPG'}
             </Button>
             <Button variant="outline" size="sm" onClick={handleCopyText}>
               <Copy className="h-4 w-4 mr-1" /> Salin

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -12,23 +12,38 @@ import { clearHistory, getHistory } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
 import { useTheme } from '@/hooks/use-theme';
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+}
+
 export default function Pengaturan() {
   const [darkMode, setDarkMode] = useTheme();
   const { toast } = useToast();
-  const [historyCount, setHistoryCount] = useState(getHistory().length);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [historyCount, setHistoryCount] = useState(() => getHistory().length);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
-  // Listen for PWA install prompt
-  if (typeof window !== 'undefined') {
-    window.addEventListener('beforeinstallprompt', (e: any) => {
+  // Refresh history count on mount + when tab regains focus
+  useEffect(() => {
+    const refresh = () => setHistoryCount(getHistory().length);
+    refresh();
+    window.addEventListener('focus', refresh);
+    return () => window.removeEventListener('focus', refresh);
+  }, []);
+
+  // Capture PWA install prompt (one-time)
+  useEffect(() => {
+    const handler = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
-    });
-  }
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
 
   const handleInstall = async () => {
     if (deferredPrompt) {
-      deferredPrompt.prompt();
+      await deferredPrompt.prompt();
       await deferredPrompt.userChoice;
       setDeferredPrompt(null);
     } else {
@@ -53,7 +68,6 @@ export default function Pengaturan() {
         path="/pengaturan"
       />
       <div className="space-y-4">
-        {/* Dark Mode */}
         <section aria-labelledby="setting-darkmode">
         <Card>
           <CardHeader className="pb-3">
@@ -69,7 +83,6 @@ export default function Pengaturan() {
         </Card>
         </section>
 
-        {/* Install PWA */}
         <section aria-labelledby="setting-install">
         <Card>
           <CardHeader className="pb-3">
@@ -89,7 +102,6 @@ export default function Pengaturan() {
         </Card>
         </section>
 
-        {/* Data */}
         <section aria-labelledby="setting-data">
         <Card>
           <CardHeader className="pb-3">
@@ -116,7 +128,6 @@ export default function Pengaturan() {
 
         <Separator />
 
-        {/* About */}
         <section aria-labelledby="setting-about">
         <Card>
           <CardHeader className="pb-3">
