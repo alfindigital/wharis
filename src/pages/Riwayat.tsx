@@ -47,14 +47,20 @@ export default function Riwayat() {
           <Card key={item.id}>
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
-                <div className="flex-1 cursor-pointer" onClick={() => setExpanded(expanded === item.id ? null : item.id)}>
+                <button
+                  type="button"
+                  className="flex-1 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+                  onClick={() => setExpanded(expanded === item.id ? null : item.id)}
+                  aria-expanded={expanded === item.id}
+                  aria-label={`${expanded === item.id ? 'Tutup' : 'Buka'} detail perhitungan ${new Date(item.date).toLocaleDateString('id-ID')}`}
+                >
                   <p className="text-sm font-semibold">
                     {new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     Harta bersih: {formatCurrency(item.netHarta)} · {item.results.filter(r => !r.blocked).length} ahli waris
                   </p>
-                </div>
+                </button>
                 <div className="flex gap-1">
                   <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setExpanded(expanded === item.id ? null : item.id)} aria-label={expanded === item.id ? 'Tutup detail' : 'Buka detail perhitungan'}>
                     {expanded === item.id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}

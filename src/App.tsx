@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import BottomNav from "@/components/BottomNav";
 import Index from "./pages/Index";
-import Hitung from "./pages/Hitung";
 import Panduan from "./pages/Panduan";
 import Riwayat from "./pages/Riwayat";
 import Pengaturan from "./pages/Pengaturan";
@@ -21,7 +20,6 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/hitung" element={<Hitung />} />
           <Route path="/panduan" element={<Panduan />} />
           <Route path="/riwayat" element={<Riwayat />} />
           <Route path="/pengaturan" element={<Pengaturan />} />

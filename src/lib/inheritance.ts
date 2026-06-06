@@ -382,7 +382,7 @@ export function calculateInheritance(input: CalculationInput): CalculationResult
   }
 
   let remaining = netHarta;
-  let isAul = totalFurudhFraction > 1;
+  const isAul = totalFurudhFraction > 1;
   let isRadd = false;
   
   // Calculate furudh amounts
