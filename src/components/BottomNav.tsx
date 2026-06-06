@@ -22,6 +22,8 @@ export default function BottomNav() {
             <button
               key={path}
               onClick={() => navigate(path)}
+              aria-current={active ? 'page' : undefined}
+              aria-label={label}
               className={cn(
                 'flex flex-col items-center justify-center gap-0.5 flex-1 py-1 rounded-xl transition-colors',
                 active
